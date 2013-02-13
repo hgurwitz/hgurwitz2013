@@ -9,12 +9,14 @@ public class Projectile {
 	private double velocity;
 	private Color color;
 	private int size;
+	private double lifespan;
 	
-	public Projectile(double angle, double velocity, Color color, int size) {
+	public Projectile(double angle, double velocity, Color color, int size, double lifespan) {
 		this.angle = angle;
 		this.velocity = velocity;
 		this.color=color;
 		this.size=size;
+		this.lifespan=lifespan;
 	}
 	
 	public double getX(double time){
@@ -28,9 +30,7 @@ public class Projectile {
 		return color;
 	}
 
-	public void setColor(Color color) {
-		this.color = color;
-	}
+	
 
 	public int getSize() {
 		return size;
@@ -39,5 +39,10 @@ public class Projectile {
 	public void setSize(int size) {
 		this.size = size;
 	}
+
+	public double getLifespan() {
+		return lifespan;
+	}
+
 	
 }
