@@ -16,9 +16,9 @@ public class StackUsingQueues {
 		stack1.push(s);
 	}
 	
-	public String dequeue(){
+	//public String dequeue(){
 		
-	}
+	//}
 	
 	public static void main(String[]args){
 		
