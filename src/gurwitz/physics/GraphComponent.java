@@ -15,76 +15,103 @@ import javax.swing.JComponent;
 public class GraphComponent extends JComponent {
 
 	private double time;
-	private Projectile[] projectiles;
+	private double incrementTimeBy;
+	private double timeForMore;
+	private ArrayList<Projectile> projectiles;
 	private Random random;
 	private Color color;
 	private ArrayList<Trail> trails;
-	
+	protected boolean freeze;
+
 	public GraphComponent() {
-		
+
 		super();
-		time=0.0;
-		trails=new ArrayList<Trail>();
-		random=new Random();
-		color=new Color(10, 10, 10);
-		projectiles = new Projectile[10];
+		time = 0.0;
+		incrementTimeBy = .05;
+		timeForMore = 0.0;
+		trails = new ArrayList<Trail>();
+		random = new Random();
+		color = new Color(10, 10, 10);
+		projectiles = new ArrayList<Projectile>();
+		addNewProjectiles();
+		freeze = false;
+		addMouseListener(new MouseClickListener(this));
+		setFocusable(true);
+
+	}
+
+	private void addNewProjectiles() {
 		for (int i = 0; i < 10; i++) {
-			color=new Color(random.nextInt(255), 
-					random.nextInt(255), 
+			color = new Color(random.nextInt(255), random.nextInt(255),
 					random.nextInt(255));
-			projectiles[i]=new Projectile(random.nextInt(50)+40,
-					random.nextInt(110)+50, color, random.nextInt(18)+5,
-					random.nextInt(200)+100);
+			double lifespan = incrementTimeBy * 100;
+			lifespan = random.nextInt((int) lifespan);
+			lifespan += (time + 2);
+			projectiles.add(new Projectile(random.nextInt(50) + 40, random
+					.nextInt(110) + 50, color, random.nextInt(15) + 7,
+					lifespan, time));
 		}
 	}
-	
+
 	protected void paintComponent(Graphics g) {
-		
+
 		// do all of draw calls in here
 		// or in methods called here
 		// overrides super method
-		
+
 		super.paintComponent(g);
-		//change origin to center
-		//g.translate(getWidth()/2, getHeight()/2);
+
+		// change origin to center
+		// g.translate(getWidth()/2, getHeight()/2);
+
 		g.translate(0, getHeight());
-		time += .005;
-		drawGridAndTrails(g);
-
-		for (int j = 0; j < 10; j++) {
-			Projectile p = projectiles[j];
-			if (p.getLifespan()<time){
-				g.setColor(p.getColor());
-				int xValue=(int) p.getX(time);
-				int yValue=(int) p.getY(time);
-				g.fillOval(xValue-5, -yValue-5, p.getSize(), p.getSize());
-				trails.add(new Trail(xValue, yValue, p.getSize()));
-			}
-			else{
-				System.out.println(p.getLifespan()+" timed out");
-			}
-
+		if (!freeze) {
+			time += incrementTimeBy;
+			timeForMore += incrementTimeBy;
 		}
+
+		drawGrid(g);
+		// trails are slowing the whole thing down
+		// drawTrails(g);
+
+		System.out.println("time: " + time);
+		if (timeForMore > 1.5) {
+			addNewProjectiles();
+			timeForMore = 0;
+		}
+
+		for (Projectile p : projectiles) {
+			double relativeTime = time - p.getStartTime();
+			if (p.getLifespan() > relativeTime) {
+				g.setColor(p.getColor());
+				int xValue = (int) p.getX(relativeTime);
+				int yValue = (int) p.getY(relativeTime);
+				g.fillOval(xValue - 5, -yValue - 5, p.getSize(), p.getSize());
+				// trails.add(new Trail(xValue, yValue, p.getSize()));
+			}
+		}
+
 		repaint();
 
 	}
 
-	private void drawGridAndTrails(Graphics g) {
+	private void drawGrid(Graphics g) {
 		g.setColor(Color.LIGHT_GRAY);
-		
-		for (int i=0; i<getWidth(); i+=20){
-			//drawing vertical lines
+
+		for (int i = 0; i < getWidth(); i += 20) {
+			// drawing vertical lines
 			g.drawLine(i, -getHeight(), i, 0);
 		}
-		for (int i=0; i<getHeight(); i+=20){
-			//drawing horizontal lines
+		for (int i = 0; i < getHeight(); i += 20) {
+			// drawing horizontal lines
 			g.drawLine(0, -i, 5000, -i);
 		}
-		for (Trail t: trails){
-			g.fillOval(t.getX()-5, -t.getY()-5, t.getSize(), t.getSize());
+	}
+
+	private void drawTrails(Graphics g) {
+		for (Trail t : trails) {
+			g.fillOval(t.getX() - 5, -t.getY() - 5, t.getSize(), t.getSize());
 		}
 	}
-	
-	
 
 }
