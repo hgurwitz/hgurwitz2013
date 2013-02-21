@@ -42,12 +42,24 @@ public class Projectile {
 		this.size = size;
 	}
 
+	public void setVelocity(double velocity) {
+		this.velocity = velocity;
+	}
+
 	public double getLifespan() {
 		return lifespan;
 	}
 
 	public double getStartTime() {
 		return startTime;
+	}
+
+	public double getAngle() {
+		return angle;
+	}
+
+	public double getVelocity() {
+		return velocity;
 	}
 
 }

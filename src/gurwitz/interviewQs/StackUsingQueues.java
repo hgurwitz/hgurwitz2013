@@ -42,6 +42,7 @@ public class StackUsingQueues {
 		s.enqueue("B");
 		s.enqueue("C");
 		s.enqueue("D");
+		s.dequeue();
 		s.enqueue("E");
 		s.enqueue("F");
 		s.enqueue("G");

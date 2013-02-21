@@ -7,11 +7,6 @@ import java.util.Random;
 
 import javax.swing.JComponent;
 
-//hw: continuous and lifespan
-//each projectile has a lifespan after which it's removed from board
-//(take away trails)
-//continuous: have new projectiles keep spouting out from the origin
-
 public class GraphComponent extends JComponent {
 
 	private double time;
@@ -27,7 +22,7 @@ public class GraphComponent extends JComponent {
 
 		super();
 		time = 0.0;
-		incrementTimeBy = .05;
+		incrementTimeBy = .002;
 		timeForMore = 0.0;
 		trails = new ArrayList<Trail>();
 		random = new Random();
@@ -44,11 +39,13 @@ public class GraphComponent extends JComponent {
 		for (int i = 0; i < 10; i++) {
 			color = new Color(random.nextInt(255), random.nextInt(255),
 					random.nextInt(255));
-			double lifespan = incrementTimeBy * 100;
+
+			double lifespan = incrementTimeBy * 1000;
+
 			lifespan = random.nextInt((int) lifespan);
-			lifespan += (time + 2);
-			projectiles.add(new Projectile(random.nextInt(50) + 40, random
-					.nextInt(110) + 50, color, random.nextInt(15) + 7,
+			lifespan += (3);
+			projectiles.add(new Projectile(random.nextInt(360) + 40, random
+					.nextInt(360) + 50, color, random.nextInt(15) + 7,
 					lifespan, time));
 		}
 	}
@@ -61,20 +58,17 @@ public class GraphComponent extends JComponent {
 
 		super.paintComponent(g);
 
-		// change origin to center
-		// g.translate(getWidth()/2, getHeight()/2);
+		g.translate(getWidth() / 2, getHeight() / 2);
 
-		g.translate(0, getHeight());
 		if (!freeze) {
 			time += incrementTimeBy;
-			timeForMore += incrementTimeBy;
+			timeForMore += .05;
 		}
 
 		drawGrid(g);
 		// trails are slowing the whole thing down
 		// drawTrails(g);
 
-		System.out.println("time: " + time);
 		if (timeForMore > 1.5) {
 			addNewProjectiles();
 			timeForMore = 0;
@@ -98,13 +92,15 @@ public class GraphComponent extends JComponent {
 	private void drawGrid(Graphics g) {
 		g.setColor(Color.LIGHT_GRAY);
 
-		for (int i = 0; i < getWidth(); i += 20) {
+		for (int i = -(getWidth() / 2); i < getWidth() / 2; i += 20) {
 			// drawing vertical lines
-			g.drawLine(i, -getHeight(), i, 0);
+			g.drawLine(i, -getHeight() / 2, i, 0);
+			g.drawLine(i, +getHeight() / 2, i, 0);
 		}
-		for (int i = 0; i < getHeight(); i += 20) {
+		for (int i = -(getHeight() / 2); i < getHeight() / 2; i += 20) {
 			// drawing horizontal lines
-			g.drawLine(0, -i, 5000, -i);
+			g.drawLine(0, -i, getWidth() / 2, -i);
+			g.drawLine(0, -i, -getWidth() / 2, -i);
 		}
 	}
 
