@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Random;
 
 import javax.swing.JComponent;
@@ -16,10 +17,9 @@ public class FireComponent extends JComponent {
 
 	private double time;
 	private double incrementTimeBy;
-	private ArrayList<Projectile> projectiles;
+	private LinkedList<Projectile> projectiles;
 	private Random random;
 	private Color color;
-	protected boolean freeze;
 	private double relativeTime;
 
 	public FireComponent() {
@@ -27,9 +27,8 @@ public class FireComponent extends JComponent {
 		time = 0.0;
 		incrementTimeBy = .05;
 		random = new Random();
-		projectiles = new ArrayList<Projectile>();
+		projectiles = new LinkedList<Projectile>();
 		addNewProjectiles();
-		freeze = false;
 	}
 
 	private void addNewProjectiles() {
@@ -89,9 +88,9 @@ public class FireComponent extends JComponent {
 			return new Color(255, 255, random.nextInt(40) + 215);
 		} else if (relativeTime < 3) {
 			return new Color(255, random.nextInt(40) + 215, 0);
-		} else if (relativeTime < 3.9) {
+		} else if (relativeTime < 4.1) {
 			return new Color(255, random.nextInt(5) + 200, 0);
-		} else if (relativeTime < 5.5) {
+		} else if (relativeTime < 5.7) {
 			return new Color(255, random.nextInt(100), 0);
 		} else if (relativeTime < 8) {
 			return Color.GRAY;
