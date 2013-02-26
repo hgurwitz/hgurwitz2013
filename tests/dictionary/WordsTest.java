@@ -1,4 +1,4 @@
-package scrabble;
+package dictionary;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -26,29 +26,29 @@ public class WordsTest {
 
 	@Test
 	public void testAnagrams() {
-		assertTrue(w.isThisAnAlphaAnagram("apple", "apple"));
+		assertTrue(w.isAlphaAnagram("apple", "apple"));
 
 	}
 
 	@Test
 	public void testNonAnagrams() {
-		assertFalse(w.isThisAnAlphaAnagram("pear", "para"));
-		assertFalse(w.isThisAnAlphaAnagram("apple", "aplee"));
-		assertFalse(w.isThisAnAlphaAnagram("apple", "applep"));
+		assertFalse(w.isAlphaAnagram("pear", "para"));
+		assertFalse(w.isAlphaAnagram("apple", "aplee"));
+		assertFalse(w.isAlphaAnagram("apple", "applep"));
 
 	}
 
 	@Test
 	public void testHashMapAnagrams() {
-		assertTrue(w.isThisAnAnagram("apple", "apple"));
+		assertTrue(w.isAnagram("apple", "apple"));
 
 	}
 
 	@Test
 	public void testHashMapNonAnagrams() {
-		assertFalse(w.isThisAnAnagram("pear", "para"));
-		assertFalse(w.isThisAnAnagram("apple", "aplee"));
-		assertFalse(w.isThisAnAnagram("apple2", "applep"));
+		assertFalse(w.isAnagram("pear", "para"));
+		assertFalse(w.isAnagram("apple", "aplee"));
+		assertFalse(w.isAnagram("apple2", "applep"));
 
 	}
 
