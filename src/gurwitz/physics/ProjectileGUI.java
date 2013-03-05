@@ -6,10 +6,8 @@ import javax.swing.JFrame;
 
 public class ProjectileGUI extends JFrame {
 
-	private Projectile p;
-
 	public ProjectileGUI() {
-		
+
 		setTitle("Projectile GUI");
 		setSize(800, 600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

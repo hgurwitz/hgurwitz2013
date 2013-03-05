@@ -11,8 +11,12 @@ public class FireGUI extends JFrame {
 		setSize(800, 600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
-		add(new FireComponent(), BorderLayout.CENTER);
+		FireView f = new FireView();
+		add(f, BorderLayout.CENTER);
 		setVisible(true);
+		add(f.counter, BorderLayout.SOUTH);
+		add(f.timeLabel, BorderLayout.NORTH);
+
 	}
 
 	public static void main(String[] args) {

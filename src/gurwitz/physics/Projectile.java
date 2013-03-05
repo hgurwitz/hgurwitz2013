@@ -10,24 +10,31 @@ public class Projectile {
 	private int size;
 	private double lifespan;
 	private double startTime;
+	private double sin;
+	private double cos;
+	private int startX;
+	private int startY;
 
-	public Projectile(double angle, double velocity, Color color, int size,
-			double lifespan, double startTime) {
-		this.angle = angle;
+	public Projectile(double angleDegrees, double velocity, Color color,
+			int size, double lifespan, double startTime, int x, int y) {
+		this.angle = Math.toRadians(angleDegrees);
 		this.velocity = velocity;
 		this.color = color;
 		this.size = size;
 		this.lifespan = lifespan;
 		this.startTime = startTime;
+		sin = Math.sin(angle);
+		cos = Math.cos(angle);
+		this.startX = x;
+		this.startY = y;
 	}
 
 	public double getX(double time) {
-		return Math.cos(Math.toRadians(angle)) * velocity * time;
+		return cos * velocity * time + startX;
 	}
 
 	public double getY(double time) {
-		return Math.sin(Math.toRadians(angle)) * velocity * time
-				+ (.5 * -9.8 * time * time);
+		return sin * velocity * time + (.5 * -9.8 * time * time) + startY;
 	}
 
 	public Color getColor() {
@@ -60,6 +67,34 @@ public class Projectile {
 
 	public double getVelocity() {
 		return velocity;
+	}
+
+	public void setStartTime(double startTime) {
+		this.startTime = startTime;
+	}
+
+	@Override
+	public String toString() {
+		return "Projectile [angle=" + Math.toDegrees(angle) + ", velocity="
+				+ velocity + ", color=" + color + ", size=" + size
+				+ ", lifespan=" + lifespan + ", startTime=" + startTime
+				+ ", sin=" + sin + ", cos=" + cos + "]";
+	}
+
+	public int getStartX() {
+		return startX;
+	}
+
+	public void setStartX(int x) {
+		this.startX = x;
+	}
+
+	public int getStartY() {
+		return startY;
+	}
+
+	public void setStartY(int y) {
+		this.startY = y;
 	}
 
 }

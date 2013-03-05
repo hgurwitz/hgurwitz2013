@@ -27,10 +27,10 @@ public class FindAnagrams {
 	}
 
 	public void printAllAnagramsToFile() throws FileNotFoundException {
-		File f = new File("./anagramList.txt");
+		File f = new File("./anagramList2.txt");
 		PrintWriter p = new PrintWriter(f);
 		for (ArrayList<String> list : fullListOfAnagrams) {
-			p.println(list.toString());
+			p.println(list.size() + " \t" + list.toString());
 		}
 		p.close();
 
@@ -39,7 +39,8 @@ public class FindAnagrams {
 	public static void main(String[] args) {
 		try {
 			FindAnagrams f = new FindAnagrams();
-			System.out.println("\n\nLONGEST LIST:" + f.getLongestAnagramList());
+			System.out
+					.println("\n\nLONGEST LIST:" + f.getLongestAnagramLists());
 			System.out.println(f.fullListOfAnagrams.size());
 			f.printAllAnagramsToFile();
 
@@ -49,17 +50,25 @@ public class FindAnagrams {
 
 	}
 
-	public ArrayList<String> getLongestAnagramList() {
+	public ArrayList<ArrayList<String>> getLongestAnagramLists() {
 		int max = fullListOfAnagrams.get(0).size();
-		int indexOfMax = 0;
+		ArrayList<Integer> indexesOfMax = new ArrayList<Integer>();
+		indexesOfMax.add(0);
 		for (int i = 1; i < fullListOfAnagrams.size(); i++) {
 			int currentSize = fullListOfAnagrams.get(i).size();
 			if (currentSize > max) {
 				max = currentSize;
-				indexOfMax = i;
+				indexesOfMax.clear();
+				indexesOfMax.add(i);
+			} else if (currentSize == max) {
+				indexesOfMax.add(i);
 			}
 		}
-		return fullListOfAnagrams.get(indexOfMax);
+		ArrayList<ArrayList<String>> longestAnagrams = new ArrayList<ArrayList<String>>();
+		for (Integer i : indexesOfMax) {
+			longestAnagrams.add(fullListOfAnagrams.get(i));
+		}
+		return longestAnagrams;
 	}
 
 	public void findAnagrams() {

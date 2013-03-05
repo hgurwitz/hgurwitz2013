@@ -46,7 +46,7 @@ public class GraphComponent extends JComponent {
 			lifespan += (3);
 			projectiles.add(new Projectile(random.nextInt(360) + 40, random
 					.nextInt(360) + 50, color, random.nextInt(15) + 7,
-					lifespan, time));
+					lifespan, time, 0, 0));
 		}
 	}
 
