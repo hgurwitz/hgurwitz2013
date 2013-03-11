@@ -9,11 +9,6 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 public class Words {
-	// hw: LSR
-	// find all words that can be made with set of tiles (all of them/some of
-	// them)
-	// wikipedia banangrams--generate a sample set of tiles that have proper
-	// letter distribution (say 7) + JUnit
 
 	private HashMap<String, String> words;
 	private File f;
