@@ -16,6 +16,8 @@ import javax.swing.JLabel;
 
 public class FireView extends JComponent {
 
+	private static final AlphaComposite ALPHA = AlphaComposite.getInstance(
+			AlphaComposite.SRC_OVER, .3f);
 	protected double time;
 	private double incrementTimeBy;
 	private Random random;
@@ -61,16 +63,12 @@ public class FireView extends JComponent {
 				fountainIter.remove();
 			} else {
 				for (int i = 0; i < 20; i++) {
-					if (i < pool.size()) {
-						Projectile p = pool.get(i);
-						pool.remove(p);
-						p.setStartTime(time);
-						p.setStartX(f.getX());
-						p.setStartY(getHeight() - f.getY());
-						projectiles.add(p);
-					} else {
-						System.out.println("Index too large");
-					}
+					Projectile p = pool.remove(pool.size() - 1);
+					p.setStartTime(time);
+					p.setStartX(f.getX());
+					p.setStartY(getHeight() - f.getY());
+					projectiles.add(p);
+
 				}
 			}
 		}
@@ -105,8 +103,7 @@ public class FireView extends JComponent {
 		// g.translate(getWidth() / 2, (getHeight() / 2) + 100);
 		g.translate(0, getHeight());
 		g2 = (Graphics2D) g;
-		g2.setComposite(AlphaComposite
-				.getInstance(AlphaComposite.SRC_OVER, .3f));
+		g2.setComposite(ALPHA);
 
 		time += incrementTimeBy;
 
@@ -136,8 +133,7 @@ public class FireView extends JComponent {
 
 	private Color getColor(Projectile p) {
 		relativeTime = time - p.getStartTime();
-		currColor++;
-		if (currColor > 49) {
+		if (++currColor > 49) {
 			currColor = 0;
 		}
 
