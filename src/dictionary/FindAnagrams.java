@@ -13,14 +13,14 @@ public class FindAnagrams {
 
 	// find largest set of anagrams in the list
 	private HashMap<String, String> words;
-	private Words w;
+	private Dictionary w;
 	private Iterator<String> iter;
 
 	private ArrayList<LinkedList<String>> wordListsByLength;
 	private ArrayList<ArrayList<String>> fullListOfAnagrams;
 
 	public FindAnagrams() throws FileNotFoundException {
-		w = new Words();
+		w = new Dictionary();
 		words = w.getWords();
 
 		wordListsByLength = w.readFileIntoListsBySize();

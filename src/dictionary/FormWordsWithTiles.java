@@ -8,12 +8,12 @@ import java.util.Set;
 
 public class FormWordsWithTiles {
 
-	private Words w;
+	private Dictionary d;
 	private Random r;
 	private ArrayList<Character> tiles;
 
 	public FormWordsWithTiles(int numTiles) throws FileNotFoundException {
-		w = new Words();
+		d = new Dictionary();
 		r = new Random();
 		tiles = new ArrayList<Character>();
 		addTiles(numTiles);
@@ -21,7 +21,7 @@ public class FormWordsWithTiles {
 
 	public FormWordsWithTiles(ArrayList<Character> tiles)
 			throws FileNotFoundException {
-		w = new Words();
+		d = new Dictionary();
 		r = new Random();
 		this.tiles = tiles;
 	}
@@ -39,7 +39,7 @@ public class FormWordsWithTiles {
 
 	public ArrayList<String> getWordsThatCanBeFormedWithTiles() {
 		ArrayList<String> words = new ArrayList<String>();
-		Set<String> keySet = w.getWords().keySet();
+		Set<String> keySet = d.getWords().keySet();
 		Iterator<String> wordIterator = keySet.iterator();
 		while (wordIterator.hasNext()) {
 			String s = wordIterator.next();
@@ -71,18 +71,15 @@ public class FormWordsWithTiles {
 	}
 
 	public boolean isAbleToBeFormedByTiles(String s) {
-		char[] sortedString = w.alphabetize(s);
-		boolean ableToBeFormed = true;
-		for (char c : sortedString) {
-			if (!tiles.contains(c)) {
-				ableToBeFormed = false;
-				break;
-			} else if (!(numTimesLetterAppears(sortedString, c) <= numTimesLetterAppearsInTiles(c))) {
-				ableToBeFormed = false;
-				break;
+		char[] sArray = s.toCharArray();
+		for (char c : sArray) {
+			int inTiles = numTimesLetterAppearsInTiles(c);
+			int inWord = numTimesLetterAppears(sArray, c);
+			if (!tiles.contains(c) || !(inWord <= inTiles)) {
+				return false;
 			}
 		}
-		return ableToBeFormed;
+		return true;
 	}
 
 	private Character generateALetter() {

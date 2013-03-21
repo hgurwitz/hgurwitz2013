@@ -8,13 +8,13 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Scanner;
 
-public class Words {
+public class Dictionary {
 
 	private HashMap<String, String> words;
 	private File f;
 	private Scanner readFile;
 
-	public Words() throws FileNotFoundException {
+	public Dictionary() throws FileNotFoundException {
 		words = new HashMap<String, String>();
 		f = new File("./wordlist.txt");
 		readFile = new Scanner(f);

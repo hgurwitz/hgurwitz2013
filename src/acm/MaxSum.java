@@ -12,7 +12,8 @@ public class MaxSum {
 	private Scanner readFile;
 	private int size;
 	private int maxSum;
-	private int[][] maxSumArray;
+
+	// private int[][] maxSumArray;
 
 	public MaxSum(File file) throws Exception {
 		new ArrayList<ArrayList<Integer>>();
@@ -43,8 +44,8 @@ public class MaxSum {
 
 	private void initializeMaxSums() {
 		maxSum = array[0][0];
-		maxSumArray = new int[1][1];
-		maxSumArray[0][0] = maxSum;
+		// maxSumArray = new int[1][1];
+		// maxSumArray[0][0] = maxSum;
 	}
 
 	public void findMaximalSubRectangle() {
@@ -65,48 +66,40 @@ public class MaxSum {
 					// this is the whole array, not a subarray, so do nothing
 				} else {
 
-					int[][] subArray = get2DSubarray(array, row, col, width,
-							height);
-					int arraySum = sumOfArray(subArray);
+					// int[][] subArray = get2DSubarray(array, row, col, width,
+					// height);
+					int arraySum = sumOfArray(array, row, col, width, height);
 					if (arraySum > maxSum) {
 						maxSum = arraySum;
-						maxSumArray = subArray;
+						// maxSumArray = subArray;
 					}
 
-					else if (arraySum == maxSum) {
-						maxSumArray = subArray;
-					}
 				}
 
 			}
 		}
 	}
 
-	public int[][] get2DSubarray(int[][] origArray, int rowstart, int colstart,
-			int rowend, int colend) {
-
-		int[][] subArray = new int[(rowend - rowstart) + 1][(colend - colstart) + 1];
-		int newArrayRow = 0;
-		for (int origArrayRow = rowstart; origArrayRow < subArray.length
-				+ rowstart; origArrayRow++) {
-			subArray[newArrayRow++] = Arrays.copyOfRange(
-					origArray[origArrayRow], colstart, (colend + 1));
-		}
-		return subArray;
-	}
+	/*
+	 * public int[][] get2DSubarray(int[][] origArray, int rowstart, int
+	 * colstart, int rowend, int colend) {
+	 * 
+	 * int[][] subArray = new int[(rowend - rowstart) + 1][(colend - colstart) +
+	 * 1]; int newArrayRow = 0; for (int origArrayRow = rowstart; origArrayRow <
+	 * subArray.length + rowstart; origArrayRow++) { subArray[newArrayRow++] =
+	 * Arrays.copyOfRange( origArray[origArrayRow], colstart, (colend + 1)); }
+	 * return subArray; }
+	 */
 
 	public int getMaxSum() {
 		return maxSum;
 	}
 
-	public int[][] getMaxSumArray() {
-		return maxSumArray;
-	}
-
-	public int sumOfArray(int[][] arrayToSum) {
+	public int sumOfArray(int[][] arrayToSum, int rowstart, int colstart,
+			int rowend, int colend) {
 		int sum = 0;
-		for (int i = 0; i < arrayToSum.length; i++) {
-			for (int j = 0; j < arrayToSum[i].length; j++) {
+		for (int i = rowstart; i <= rowend; i++) {
+			for (int j = colstart; j <= colend; j++) {
 				sum += arrayToSum[i][j];
 			}
 		}
@@ -137,14 +130,13 @@ public class MaxSum {
 		m.findMaximalSubRectangle();
 
 		System.out.println(m.getMaxSum());
-		int[][] maxArray = m.getMaxSumArray();
-		for (int i = 0; i < maxArray.length; i++) {
-			for (int j = 0; j < maxArray[i].length; j++) {
-				System.out.printf("%6d", maxArray[i][j]);
-			}
-			System.out.println();
-
-		}
+		/*
+		 * int[][] maxArray = m.getMaxSumArray(); for (int i = 0; i <
+		 * maxArray.length; i++) { for (int j = 0; j < maxArray[i].length; j++)
+		 * { System.out.printf("%6d", maxArray[i][j]); } System.out.println();
+		 * 
+		 * }
+		 */
 
 	}
 }
