@@ -1,4 +1,4 @@
-package dictionary;
+package gurwitz.dictionary;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;

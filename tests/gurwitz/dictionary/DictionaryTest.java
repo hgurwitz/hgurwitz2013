@@ -1,7 +1,8 @@
-package dictionary;
+package gurwitz.dictionary;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import gurwitz.dictionary.Dictionary;
 
 import org.junit.Before;
 import org.junit.Test;

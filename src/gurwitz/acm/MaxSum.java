@@ -1,4 +1,4 @@
-package acm;
+package gurwitz.acm;
 
 import java.io.File;
 import java.util.ArrayList;

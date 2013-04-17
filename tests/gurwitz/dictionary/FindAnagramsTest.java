@@ -1,6 +1,8 @@
-package dictionary;
+package gurwitz.dictionary;
 
 import static org.junit.Assert.*;
+
+import gurwitz.dictionary.FindAnagrams;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;

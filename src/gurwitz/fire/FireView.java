@@ -1,4 +1,4 @@
-package fire;
+package gurwitz.fire;
 
 import gurwitz.physics.Projectile;
 

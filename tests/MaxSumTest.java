@@ -1,10 +1,10 @@
 
 
 import static org.junit.Assert.*;
+import gurwitz.acm.MaxSum;
 
 import org.junit.Test;
 
-import acm.MaxSum;
 
 public class MaxSumTest {
 
