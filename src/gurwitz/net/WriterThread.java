@@ -49,9 +49,9 @@ public class WriterThread extends Thread {
 		Iterator<OutputStream> iter = outs.iterator();
 		while (iter.hasNext()) {
 			OutputStream os = iter.next();
-			if (os != null) {
+			try {
 				writeToStream(os, s);
-			} else {
+			} catch (Exception e) {
 				iter.remove();
 			}
 
@@ -59,14 +59,11 @@ public class WriterThread extends Thread {
 
 	}
 
-	private void writeToStream(OutputStream os, String s) {
-		try {
-			os.write(s.getBytes());
-			os.write("\n".getBytes());
-			os.flush();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	private void writeToStream(OutputStream os, String s) throws IOException {
+		os.write(s.getBytes());
+		os.write("\n".getBytes());
+		os.flush();
+
 	}
 
 }

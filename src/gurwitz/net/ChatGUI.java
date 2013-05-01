@@ -53,7 +53,8 @@ public class ChatGUI extends JFrame {
 	}
 
 	private void initializeClient() throws UnknownHostException, IOException {
-		socket = new Socket("localhost", 8080);
+		socket = new Socket("192.168.117.119", 8080);
+		// socket = new Socket("localhost", 8080);
 		readerThread = new Client(socket, this);
 	}
 
@@ -72,7 +73,7 @@ public class ChatGUI extends JFrame {
 		// String oldChats = chat.getText();
 		// chat.setText(oldChats + "\n" + s);
 		String oldChats = chat.getText();
-		chat.setText(oldChats + "\n" + s);
+		// chat.setText(oldChats + "\n" + s);
 		readerThread.send("Hadassah: " + s);
 		compose.setText("");
 
