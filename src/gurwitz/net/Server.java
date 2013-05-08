@@ -7,33 +7,15 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class Server extends ReaderThread {
+public class Server extends WritingThread {
+
+	// private Scanner inputStreamReader;
 
 	public Server(ServerSocket server, ChatGUI chatGUI) throws IOException {
 		// server = new ServerSocket(1025);
-		socket = server.accept();
-		output = socket.getOutputStream();
-		in = socket.getInputStream();
-		inputStreamReader = new Scanner(in);
-		this.gui = chatGUI;
-		// out.flush();
-	}
+		super(server.accept(), chatGUI);
+		// inputStreamReader = new Scanner(in);
 
-	public void send(String message) throws IOException {
-		output.write(message.getBytes());
-		output.write("\n".getBytes());
-		output.flush();
-	}
-
-	public void run() {
-
-		Scanner scanner = new Scanner(in);
-		while (true) {
-			if (scanner.hasNext()) {
-				gui.getChatMessage((scanner.nextLine()));
-			}
-
-		}
 	}
 
 }

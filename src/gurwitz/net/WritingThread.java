@@ -7,15 +7,20 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class ReaderThread extends Thread {
+public class WritingThread extends Thread {
 
 	protected Socket socket;
 	protected ChatGUI gui;
-	protected String str;
 	protected OutputStream output;
 	protected InputStream in;
-	protected Scanner inputStreamReader;
-	protected ServerSocket server;
+
+	public WritingThread(Socket socket, ChatGUI gui) throws IOException {
+		this.socket = socket;
+		this.gui = gui;
+
+		in = socket.getInputStream();
+		output = socket.getOutputStream();
+	}
 
 	public void send(String message) throws IOException {
 		output.write(message.getBytes());
@@ -26,10 +31,11 @@ public class ReaderThread extends Thread {
 	public void run() {
 
 		Scanner scanner = new Scanner(in);
-		while (true) {
-			if (scanner.hasNext()) {
-				gui.getChatMessage((scanner.nextLine()));
-			}
+		while (scanner.hasNext()) {
+			// while (true) {
+			// if (scanner.hasNext()) {
+			gui.receiveChatMessage((scanner.nextLine()));
+			// }
 
 		}
 	}

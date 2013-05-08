@@ -7,9 +7,11 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ChatServer extends ReaderThread {
+public class ChatServer {
 
 	private WriterThread writer;
+	private ServerSocket server;
+	private Socket socket;
 	public final static Logger LOGGER = Logger.getLogger(ChatServer.class
 			.getName());
 

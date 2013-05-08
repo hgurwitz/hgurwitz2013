@@ -5,10 +5,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -23,11 +26,16 @@ public class ChatGUI extends JFrame {
 	private JTextField compose;
 	private JTextArea chat;
 	private JScrollPane scroll;
-	private ReaderThread readerThread;
+	private WritingThread readerThread;
 	private Socket socket;
+	private JTextArea currentlyChatting;
+	private ArrayList<String> currentChatters;
+	private String myName;
+	private MessageParser parser;
 
 	public ChatGUI() throws IOException {
 		super();
+
 		sendBtn = new JButton("Send");
 		compose = new JTextField();
 		compose.addKeyListener(new EnterListener());
@@ -35,7 +43,13 @@ public class ChatGUI extends JFrame {
 		scroll = new JScrollPane(chat);
 		chat.setEditable(false);
 		setLayout(new BorderLayout());
-
+		myName = "Hadassah";
+		currentChatters = new ArrayList<String>();
+		currentlyChatting = new JTextArea();
+		add(currentlyChatting, BorderLayout.EAST);
+		currentChatters.add(myName);
+		parser = new MessageParser();
+		setCurrentChatterText();
 		add(scroll, BorderLayout.CENTER);
 		add(new ComposePanel(sendBtn, compose), BorderLayout.SOUTH);
 		sendBtn.addActionListener(new ClickListener());
@@ -43,7 +57,7 @@ public class ChatGUI extends JFrame {
 		setSize(300, 200);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setName("Chat");
-
+		addWindowListener(new ChatGUIWindowListener());
 		initializeClient();
 
 		// initializeServer();
@@ -52,10 +66,20 @@ public class ChatGUI extends JFrame {
 
 	}
 
+	private void setCurrentChatterText() {
+		currentlyChatting.setText("Currently chatting:");
+		for (String name : currentChatters) {
+			currentlyChatting
+					.setText(currentlyChatting.getText() + "\n" + name);
+		}
+
+	}
+
 	private void initializeClient() throws UnknownHostException, IOException {
-		socket = new Socket("192.168.117.119", 8080);
+		socket = new Socket("192.168.117.105", 8080);
 		// socket = new Socket("localhost", 8080);
 		readerThread = new Client(socket, this);
+		readerThread.send("JOIN " + myName);
 	}
 
 	private void initializeServer() throws IOException {
@@ -63,18 +87,37 @@ public class ChatGUI extends JFrame {
 		readerThread = new Server(server, this);
 	}
 
-	public void getChatMessage(String s) {
+	public void receiveChatMessage(String s) {
+		MessageType type = parser.getMessageType(s);
+		String message = "";
+		String name = parser.getName(s);
+		switch (type) {
+		case SAY:
+			message = name + ": " + parser.getMessage(s);
+			break;
+		case JOIN:
+			message = name + parser.getMessage(s);
+			currentChatters.add(name);
+			setCurrentChatterText();
+			break;
+		case LEAVE:
+			message = name + parser.getMessage(s);
+			currentChatters.remove(name);
+			setCurrentChatterText();
+			break;
+		case DEFAULT:
+			message = "cannot parse message";
+
+		}
+
 		String oldChats = chat.getText();
-		chat.setText(oldChats + "\n" + s);
+		chat.setText(oldChats + "\n" + message);
 	}
 
 	public void sendTheChat() throws IOException {
 		String s = compose.getText();
-		// String oldChats = chat.getText();
-		// chat.setText(oldChats + "\n" + s);
 		String oldChats = chat.getText();
-		// chat.setText(oldChats + "\n" + s);
-		readerThread.send("Hadassah: " + s);
+		readerThread.send("SAY " + myName + " " + s);
 		compose.setText("");
 
 	}
@@ -135,6 +178,57 @@ public class ChatGUI extends JFrame {
 
 		@Override
 		public void keyTyped(KeyEvent arg0) {
+			// TODO Auto-generated method stub
+
+		}
+
+	}
+
+	private class ChatGUIWindowListener implements WindowListener {
+
+		@Override
+		public void windowActivated(WindowEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void windowClosed(WindowEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void windowClosing(WindowEvent e) {
+			try {
+				readerThread.send("LEAVE " + myName);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+		}
+
+		@Override
+		public void windowDeactivated(WindowEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void windowDeiconified(WindowEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void windowIconified(WindowEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void windowOpened(WindowEvent e) {
 			// TODO Auto-generated method stub
 
 		}
