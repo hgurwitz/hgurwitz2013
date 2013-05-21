@@ -34,7 +34,12 @@ public class WritingThread extends Thread {
 		while (scanner.hasNext()) {
 			// while (true) {
 			// if (scanner.hasNext()) {
-			gui.receiveChatMessage((scanner.nextLine()));
+			try {
+				gui.receiveChatMessage((scanner.nextLine()));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			// }
 
 		}

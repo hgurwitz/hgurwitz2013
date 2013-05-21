@@ -16,6 +16,7 @@ public class MessageParser {
 		for (MessageType m : messageTypes) {
 			String substring = message.substring(0, m.toString().length());
 			if (substring.equals(m.toString())) {
+
 				return m;
 			}
 		}
@@ -44,6 +45,8 @@ public class MessageParser {
 			int beginIndex = MessageType.SAY.toString().length() + 1
 					+ name.length();
 			return message.substring(beginIndex);
+		case ANNOUNCE:
+			return " is chatting";
 		}
 		return "";
 	}

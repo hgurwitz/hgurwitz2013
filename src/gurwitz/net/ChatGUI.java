@@ -33,6 +33,9 @@ public class ChatGUI extends JFrame {
 	private String myName;
 	private MessageParser parser;
 
+	// private static int currentNameID;
+	// private int myID;
+
 	public ChatGUI() throws IOException {
 		super();
 
@@ -43,11 +46,12 @@ public class ChatGUI extends JFrame {
 		scroll = new JScrollPane(chat);
 		chat.setEditable(false);
 		setLayout(new BorderLayout());
-		myName = "Hadassah";
+		// myID = getNextNameID();
+		myName = "Hadassah";// + String.valueOf(myID);
 		currentChatters = new ArrayList<String>();
 		currentlyChatting = new JTextArea();
 		add(currentlyChatting, BorderLayout.EAST);
-		currentChatters.add(myName);
+		// currentChatters.add(myName);
 		parser = new MessageParser();
 		setCurrentChatterText();
 		add(scroll, BorderLayout.CENTER);
@@ -66,6 +70,10 @@ public class ChatGUI extends JFrame {
 
 	}
 
+	// private static int getNextNameID() {
+	// return ++currentNameID;
+	// }
+
 	private void setCurrentChatterText() {
 		currentlyChatting.setText("Currently chatting:");
 		for (String name : currentChatters) {
@@ -76,8 +84,8 @@ public class ChatGUI extends JFrame {
 	}
 
 	private void initializeClient() throws UnknownHostException, IOException {
-		socket = new Socket("192.168.117.105", 8080);
-		// socket = new Socket("localhost", 8080);
+		// socket = new Socket("192.168.117.105", 8080);
+		socket = new Socket("localhost", 8080);
 		readerThread = new Client(socket, this);
 		readerThread.send("JOIN " + myName);
 	}
@@ -87,7 +95,7 @@ public class ChatGUI extends JFrame {
 		readerThread = new Server(server, this);
 	}
 
-	public void receiveChatMessage(String s) {
+	public void receiveChatMessage(String s) throws IOException {
 		MessageType type = parser.getMessageType(s);
 		String message = "";
 		String name = parser.getName(s);
@@ -99,11 +107,22 @@ public class ChatGUI extends JFrame {
 			message = name + parser.getMessage(s);
 			currentChatters.add(name);
 			setCurrentChatterText();
+			String send = "ANNOUNCE " + myName;
+			readerThread.send(send);
 			break;
 		case LEAVE:
 			message = name + parser.getMessage(s);
 			currentChatters.remove(name);
 			setCurrentChatterText();
+			break;
+		case ANNOUNCE:
+			// ignore the message if the name is already in list of currently
+			// chatting
+			if (!currentChatters.contains(name)) {
+				message = name + parser.getMessage(s);
+				currentChatters.add(name);
+				setCurrentChatterText();
+			}
 			break;
 		case DEFAULT:
 			message = "cannot parse message";
@@ -202,6 +221,7 @@ public class ChatGUI extends JFrame {
 		public void windowClosing(WindowEvent e) {
 			try {
 				readerThread.send("LEAVE " + myName);
+				System.exit(0);
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
