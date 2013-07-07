@@ -6,10 +6,6 @@ public class MessageParser {
 
 	private static StringTokenizer tokenizer;
 
-	public MessageParser() {
-
-	}
-
 	public static MessageType getMessageType(String message) {
 
 		MessageType[] messageTypes = MessageType.values();

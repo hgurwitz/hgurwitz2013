@@ -22,6 +22,7 @@ import javax.swing.JTextField;
 
 public class ChatGUI extends JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private JButton sendBtn;
 	private JTextField compose;
 	private JTextArea chat;
@@ -31,10 +32,7 @@ public class ChatGUI extends JFrame {
 	private JTextArea currentlyChatting;
 	private ArrayList<String> currentChatters;
 	private String myName;
-	private MessageParser parser;
-
-	// private static int currentNameID;
-	// private int myID;
+	private Message[] messageTypes;
 
 	public ChatGUI() throws IOException {
 		super();
@@ -46,13 +44,12 @@ public class ChatGUI extends JFrame {
 		scroll = new JScrollPane(chat);
 		chat.setEditable(false);
 		setLayout(new BorderLayout());
-		// myID = getNextNameID();
-		myName = "Hadassah";// + String.valueOf(myID);
+		myName = "Hadassah";
 		currentChatters = new ArrayList<String>();
 		currentlyChatting = new JTextArea();
+		currentlyChatting.setEditable(false);
 		add(currentlyChatting, BorderLayout.EAST);
 		// currentChatters.add(myName);
-		parser = new MessageParser();
 		setCurrentChatterText();
 		add(scroll, BorderLayout.CENTER);
 		add(new ComposePanel(sendBtn, compose), BorderLayout.SOUTH);
@@ -63,18 +60,26 @@ public class ChatGUI extends JFrame {
 		setName("Chat");
 		addWindowListener(new ChatGUIWindowListener());
 		initializeClient();
-
-		// initializeServer();
-
+		initializeMessageTypes();
 		readerThread.start();
 
 	}
 
-	// private static int getNextNameID() {
-	// return ++currentNameID;
-	// }
+	public void addMessageToChatWindow(String message) {
+		String oldChats = chat.getText();
+		chat.setText(oldChats + "\n" + message);
+	}
 
-	private void setCurrentChatterText() {
+	private void initializeMessageTypes() {
+		messageTypes = new Message[4];
+		messageTypes[0] = new JoinMessage(this);
+		messageTypes[1] = new LeaveMessage(this);
+		messageTypes[2] = new AnnounceMessage(this);
+		messageTypes[3] = new SayMessage(this);
+
+	}
+
+	public void setCurrentChatterText() {
 		currentlyChatting.setText("Currently chatting:");
 		for (String name : currentChatters) {
 			currentlyChatting
@@ -96,46 +101,17 @@ public class ChatGUI extends JFrame {
 	}
 
 	public void receiveChatMessage(String s) throws IOException {
-		MessageType type = parser.getMessageType(s);
-		String message = "";
-		String name = parser.getName(s);
-		switch (type) {
-		case SAY:
-			message = name + ": " + parser.getMessage(s);
-			break;
-		case JOIN:
-			message = name + parser.getMessage(s);
-			currentChatters.add(name);
-			setCurrentChatterText();
-			String send = "ANNOUNCE " + myName;
-			readerThread.send(send);
-			break;
-		case LEAVE:
-			message = name + parser.getMessage(s);
-			currentChatters.remove(name);
-			setCurrentChatterText();
-			break;
-		case ANNOUNCE:
-			// ignore the message if the name is already in list of currently
-			// chatting
-			if (!currentChatters.contains(name)) {
-				message = name + parser.getMessage(s);
-				currentChatters.add(name);
-				setCurrentChatterText();
-			}
-			break;
-		case DEFAULT:
-			message = "cannot parse message";
 
+		for (Message m : messageTypes) {
+			if (m.isMessage(s)) {
+				m.handle(s);
+			}
 		}
 
-		String oldChats = chat.getText();
-		chat.setText(oldChats + "\n" + message);
 	}
 
 	public void sendTheChat() throws IOException {
 		String s = compose.getText();
-		String oldChats = chat.getText();
 		readerThread.send("SAY " + myName + " " + s);
 		compose.setText("");
 
@@ -145,7 +121,6 @@ public class ChatGUI extends JFrame {
 		try {
 			new ChatGUI();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -165,7 +140,6 @@ public class ChatGUI extends JFrame {
 			try {
 				sendTheChat();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -177,12 +151,10 @@ public class ChatGUI extends JFrame {
 
 		@Override
 		public void keyPressed(KeyEvent event) {
-			// TODO Auto-generated method stub
 			if (event.getKeyCode() == KeyEvent.VK_ENTER) {
 				try {
 					sendTheChat();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -191,13 +163,11 @@ public class ChatGUI extends JFrame {
 
 		@Override
 		public void keyReleased(KeyEvent arg0) {
-			// TODO Auto-generated method stub
 
 		}
 
 		@Override
 		public void keyTyped(KeyEvent arg0) {
-			// TODO Auto-generated method stub
 
 		}
 
@@ -207,13 +177,11 @@ public class ChatGUI extends JFrame {
 
 		@Override
 		public void windowActivated(WindowEvent e) {
-			// TODO Auto-generated method stub
 
 		}
 
 		@Override
 		public void windowClosed(WindowEvent e) {
-			// TODO Auto-generated method stub
 
 		}
 
@@ -223,7 +191,6 @@ public class ChatGUI extends JFrame {
 				readerThread.send("LEAVE " + myName);
 				System.exit(0);
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 
@@ -231,28 +198,48 @@ public class ChatGUI extends JFrame {
 
 		@Override
 		public void windowDeactivated(WindowEvent e) {
-			// TODO Auto-generated method stub
 
 		}
 
 		@Override
 		public void windowDeiconified(WindowEvent e) {
-			// TODO Auto-generated method stub
 
 		}
 
 		@Override
 		public void windowIconified(WindowEvent e) {
-			// TODO Auto-generated method stub
 
 		}
 
 		@Override
 		public void windowOpened(WindowEvent e) {
-			// TODO Auto-generated method stub
 
 		}
 
+	}
+
+	public JTextField getCompose() {
+		return compose;
+	}
+
+	public JTextArea getChat() {
+		return chat;
+	}
+
+	public WritingThread getReaderThread() {
+		return readerThread;
+	}
+
+	public JTextArea getCurrentlyChatting() {
+		return currentlyChatting;
+	}
+
+	public ArrayList<String> getCurrentChatters() {
+		return currentChatters;
+	}
+
+	public String getMyName() {
+		return myName;
 	}
 
 }

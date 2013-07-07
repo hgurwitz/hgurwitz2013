@@ -11,7 +11,6 @@ public class ChatTest {
 	@Test
 	public void test() {
 		fail("Not yet implemented");
-		ServerSocket server = new ServerSocket();
 	}
 
 }
