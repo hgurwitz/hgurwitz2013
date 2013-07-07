@@ -8,7 +8,7 @@ import java.awt.Graphics2D;
 public class BodyPiece {
 
 	private static final AlphaComposite ALPHA = AlphaComposite.getInstance(
-			AlphaComposite.SRC_OVER, .5f);
+			AlphaComposite.SRC_OVER, .6f);
 	private Color color;
 	public static final int SIZE = 15;
 	private int x;

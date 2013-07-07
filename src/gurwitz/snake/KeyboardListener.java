@@ -6,19 +6,20 @@ import java.awt.event.KeyListener;
 public class KeyboardListener implements KeyListener {
 
 	private SnakeBody snake;
+	private GameController controller;
 
-	public KeyboardListener(SnakeBody snake) {
+	public KeyboardListener(SnakeBody snake, GameController controller) {
 		super();
 		this.snake = snake;
+		this.controller = controller;
 	}
 
 	@Override
 	public void keyPressed(KeyEvent event) {
 		int keyCode = event.getKeyCode();
-		// if (keyCode == KeyEvent.VK_T) {
-		// gameStateListener.onToggleThemeMusic();
-		// } else if (piece != null && !paused) {
-		if (snake != null) {
+		if (keyCode == KeyEvent.VK_P) {
+			controller.pauseAndUnPause();
+		} else if (snake != null) {
 			switch (keyCode) {
 			case KeyEvent.VK_LEFT:
 			case KeyEvent.VK_KP_LEFT:
@@ -40,9 +41,6 @@ public class KeyboardListener implements KeyListener {
 			case KeyEvent.VK_S:
 				snake.changeDirection(Direction.DOWN);
 				break;
-			// case KeyEvent.VK_SPACE:
-			// snake.changeDirection(Direction.LEFT);
-			// break;
 			default:
 				break;
 

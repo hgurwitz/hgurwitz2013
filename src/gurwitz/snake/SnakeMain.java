@@ -14,7 +14,7 @@ public class SnakeMain extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		add(new SnakeView(new GameController()));
 		setVisible(true);
-
+		setResizable(false);
 	}
 
 	public static void main(String[] args) {
