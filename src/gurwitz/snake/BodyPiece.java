@@ -1,10 +1,14 @@
 package gurwitz.snake;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 public class BodyPiece {
 
+	private static final AlphaComposite ALPHA = AlphaComposite.getInstance(
+			AlphaComposite.SRC_OVER, .5f);
 	private Color color;
 	public static final int SIZE = 15;
 	private int x;
@@ -12,6 +16,7 @@ public class BodyPiece {
 	private Direction dir;
 	private BodyPiece nextNode;
 	private BodyPiece prevNode;
+	private Graphics2D g2;
 
 	public BodyPiece getNext() {
 		return nextNode;
@@ -69,9 +74,10 @@ public class BodyPiece {
 	}
 
 	public void paint(Graphics g) {
+		g2 = (Graphics2D) g;
+		g2.setComposite(ALPHA);
 		g.setColor(color);
-		g.drawRect(x, y, SIZE, SIZE);
-		g.drawOval(x, y, 5, 5);
+		g.fillRoundRect(x, y, SIZE, SIZE, 20, 20);
 	}
 
 	public void move() {
@@ -150,10 +156,8 @@ public class BodyPiece {
 	}
 
 	public boolean detectCollisionWithWalls() {
-		if (x < SnakeView.LEFT_X
-				|| (x + SIZE) > (SnakeView.LEFT_X + SnakeView.WIDTH)
-				|| y < SnakeView.TOP_Y
-				|| (y + SIZE) > (SnakeView.TOP_Y + SnakeView.HEIGHT)) {
+		if (x < 0 || (x + SIZE) > (SnakeMain.SIDELENGTH) || y < 0
+				|| (y + SIZE) > (SnakeMain.SIDELENGTH)) {
 			return true;
 		}
 		return false;

@@ -5,12 +5,14 @@ import javax.swing.JFrame;
 public class SnakeMain extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	public static final int SIDELENGTH = (15 * BodyPiece.SIZE);
 
 	public SnakeMain() {
 		setTitle("Snake");
-		setSize(400, 400);
+		setLocationRelativeTo(null);
+		setSize(SIDELENGTH + 15, SIDELENGTH + 37);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		add(new SnakeView());
+		add(new SnakeView(new GameController()));
 		setVisible(true);
 
 	}
