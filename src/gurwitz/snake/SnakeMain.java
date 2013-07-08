@@ -1,18 +1,27 @@
 package gurwitz.snake;
 
+import java.awt.Dimension;
+
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class SnakeMain extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	public static final int SIDELENGTH = (15 * BodyPiece.SIZE);
 
 	public SnakeMain() {
-		setTitle("Snake");
+		System.out
+				.println("All compliments regarding old Snakey should be emailed to brachagz@gmail.com ");
+		setTitle("Old Snakey");
 		setLocationRelativeTo(null);
-		setSize(SIDELENGTH + 15, SIDELENGTH + 37);
+		JPanel panel = new JPanel();
+		setSize(SnakeView.SIDELENGTH, SnakeView.SIDELENGTH);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		add(new SnakeView(new GameController()));
+		panel.add(new SnakeView(new GameController()));
+		panel.setPreferredSize(new Dimension(SnakeView.SIDELENGTH,
+				SnakeView.SIDELENGTH));
+		add(panel);
+		pack();
 		setVisible(true);
 		setResizable(false);
 	}

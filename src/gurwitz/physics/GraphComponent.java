@@ -51,11 +51,6 @@ public class GraphComponent extends JComponent {
 	}
 
 	protected void paintComponent(Graphics g) {
-
-		// do all of draw calls in here
-		// or in methods called here
-		// overrides super method
-
 		super.paintComponent(g);
 
 		g.translate(getWidth() / 2, getHeight() / 2);
@@ -73,17 +68,18 @@ public class GraphComponent extends JComponent {
 			addNewProjectiles();
 			timeForMore = 0;
 		}
-
-		for (Projectile p : projectiles) {
-			double relativeTime = time - p.getStartTime();
-			if (p.getLifespan() > relativeTime) {
-				g.setColor(p.getColor());
-				int xValue = (int) p.getX(relativeTime);
-				int yValue = (int) p.getY(relativeTime);
-				g.fillOval(xValue - 5, -yValue - 5, p.getSize(), p.getSize());
-				// trails.add(new Trail(xValue, yValue, p.getSize()));
-			}
-		}
+		/*
+		 * for (Projectile p : projectiles) {
+		 * double relativeTime = time - p.getStartTime();
+		 * if (p.getLifespan() > relativeTime) {
+		 * g.setColor(p.getColor());
+		 * int xValue = (int) p.getX(relativeTime);
+		 * int yValue = (int) p.getY(relativeTime);
+		 * g.fillOval(xValue - 5, -yValue - 5, p.getSize(), p.getSize());
+		 * // trails.add(new Trail(xValue, yValue, p.getSize()));
+		 * }
+		 * }
+		 */
 
 		repaint();
 

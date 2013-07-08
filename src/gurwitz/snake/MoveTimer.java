@@ -31,9 +31,8 @@ public class MoveTimer {
 		if (currTime - lastTime > timeIncrement) {
 			lastTime = currTime;
 			return true;
-		} else {
+		} else
 			return false;
-		}
 
 	}
 

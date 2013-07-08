@@ -10,12 +10,10 @@ public class BodyPiece {
 	private static final AlphaComposite ALPHA = AlphaComposite.getInstance(
 			AlphaComposite.SRC_OVER, .6f);
 	private Color color;
-	public static final int SIZE = 15;
-	private int x;
-	private int y;
+	public static final int SIZE = 14;
+	private int x, y;
 	private Direction dir;
-	private BodyPiece nextNode;
-	private BodyPiece prevNode;
+	private BodyPiece nextNode, prevNode;
 	private Graphics2D g2;
 
 	public BodyPiece getNext() {
@@ -70,14 +68,14 @@ public class BodyPiece {
 	}
 
 	public BodyPiece(int x, int y) {
-		this(Color.BLUE, x, y);
+		this(Color.CYAN, x, y);
 	}
 
 	public void paint(Graphics g) {
 		g2 = (Graphics2D) g;
 		g2.setComposite(ALPHA);
 		g.setColor(color);
-		g.fillRoundRect(x, y, SIZE, SIZE, 20, 20);
+		g.fillRoundRect(x, y, SIZE, SIZE, 10, 10);
 	}
 
 	public void move() {
@@ -156,8 +154,8 @@ public class BodyPiece {
 	}
 
 	public boolean detectCollisionWithWalls() {
-		if (x < 0 || (x + SIZE) > (SnakeMain.SIDELENGTH) || y < 0
-				|| (y + SIZE) > (SnakeMain.SIDELENGTH)) {
+		if (x < 0 || ((x + SIZE) > (SnakeView.SIDELENGTH)) || y < 0
+				|| ((y + SIZE) > (SnakeView.SIDELENGTH))) {
 			return true;
 		}
 		return false;

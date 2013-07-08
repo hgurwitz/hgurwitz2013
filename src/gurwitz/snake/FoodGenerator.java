@@ -16,13 +16,13 @@ public class FoodGenerator {
 	public BodyPiece getNewPieceOfFood() {
 		int x, y;
 		do {
-			x = (random.nextInt(SnakeMain.SIDELENGTH));
+			x = (random.nextInt(SnakeView.SIDELENGTH));
 			x -= (x % BodyPiece.SIZE); // -truncates so it's aligned with the
 										// snake
-			y = (random.nextInt(SnakeMain.SIDELENGTH));
+			y = (random.nextInt(SnakeView.SIDELENGTH));
 			y -= (y % BodyPiece.SIZE);
 		} while (snake.detectCollisionsWithAPiece(x, y));
-		BodyPiece p = new BodyPiece(Color.RED, x, y);
+		BodyPiece p = new BodyPiece(Color.MAGENTA, x, y);
 		return p;
 	}
 
