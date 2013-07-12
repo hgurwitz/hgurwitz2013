@@ -11,7 +11,7 @@ public class SnakeView extends JComponent {
 
 	private static final long serialVersionUID = 1L;
 	private GameController controller;
-	public static final int PIECELENGTH = 25;
+	public static final int PIECELENGTH = 20;
 	public static final int SIDELENGTH = (PIECELENGTH * BodyPiece.SIZE);
 
 	public SnakeView(GameController controller) {
@@ -20,7 +20,7 @@ public class SnakeView extends JComponent {
 		setPreferredSize(new Dimension(SIDELENGTH, SIDELENGTH));
 		addKeyListener(controller.getListener());
 		setFocusable(true);
-		setBorder(BorderFactory.createLineBorder(Color.blue, 1));
+		setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 	}
 
 	protected void paintComponent(Graphics g) {

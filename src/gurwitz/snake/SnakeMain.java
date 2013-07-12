@@ -10,9 +10,7 @@ public class SnakeMain extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	public SnakeMain() {
-		System.out
-				.println("All compliments regarding old Snakey should be emailed to brachagz@gmail.com ");
-		setTitle("Old Snakey");
+		setTitle("Snake");
 		setLocationRelativeTo(null);
 		JPanel panel = new JPanel();
 		setSize(SnakeView.SIDELENGTH, SnakeView.SIDELENGTH);
