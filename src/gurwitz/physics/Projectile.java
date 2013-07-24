@@ -97,4 +97,13 @@ public class Projectile {
 		this.startY = y;
 	}
 
+	public void bounce(int x, int y) {
+		velocity *= -1;
+		angle *= 3;
+		sin = Math.sin(angle);
+		cos = Math.cos(angle);
+		this.startX = x;
+		this.startY = y;
+	}
+
 }

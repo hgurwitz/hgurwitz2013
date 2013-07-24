@@ -68,18 +68,24 @@ public class GraphComponent extends JComponent {
 			addNewProjectiles();
 			timeForMore = 0;
 		}
-		/*
-		 * for (Projectile p : projectiles) {
-		 * double relativeTime = time - p.getStartTime();
-		 * if (p.getLifespan() > relativeTime) {
-		 * g.setColor(p.getColor());
-		 * int xValue = (int) p.getX(relativeTime);
-		 * int yValue = (int) p.getY(relativeTime);
-		 * g.fillOval(xValue - 5, -yValue - 5, p.getSize(), p.getSize());
-		 * // trails.add(new Trail(xValue, yValue, p.getSize()));
-		 * }
-		 * }
-		 */
+
+		for (Projectile p : projectiles) {
+			double relativeTime = time - p.getStartTime();
+			if (p.getLifespan() > relativeTime) {
+				g.setColor(p.getColor());
+				int xValue = (int) p.getX(relativeTime);
+				int yValue = (int) p.getY(relativeTime);
+				// if touching the edge
+				int halfwayWidth = getWidth() / 4;
+				int halfwayHeight = getHeight() / 4;
+				if (((xValue == halfwayWidth) || (xValue == -halfwayWidth))
+						|| ((yValue == halfwayHeight) || (yValue == -halfwayHeight))) {
+					p.bounce(xValue, yValue);
+				}
+				g.fillOval(xValue - 5, -yValue - 5, p.getSize(), p.getSize());
+				// trails.add(new Trail(xValue, yValue, p.getSize()));
+			}
+		}
 
 		repaint();
 
