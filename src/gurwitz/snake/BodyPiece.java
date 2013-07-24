@@ -81,16 +81,16 @@ public class BodyPiece {
 	public void move() {
 		switch (dir) {
 		case UP:
-			moveUp();
+			y -= SIZE;
 			break;
 		case DOWN:
-			moveDown();
+			y += SIZE;
 			break;
 		case LEFT:
-			moveLeft();
+			x -= SIZE;
 			break;
 		case RIGHT:
-			moveRight();
+			x += SIZE;
 			break;
 		}
 		if (nextNode != null) {
@@ -102,22 +102,6 @@ public class BodyPiece {
 
 	public Direction getDir() {
 		return dir;
-	}
-
-	public void moveUp() {
-		y -= SIZE;
-	}
-
-	public void moveDown() {
-		y += SIZE;
-	}
-
-	public void moveRight() {
-		x += SIZE;
-	}
-
-	public void moveLeft() {
-		x -= SIZE;
 	}
 
 	public int getX() {
