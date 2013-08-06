@@ -26,4 +26,13 @@ public class FoodGenerator {
 		return p;
 	}
 
+	public BodyPiece getNewPieceOfFoodAtEdgeOfBoard() {
+		int x, y;
+		x = SnakeView.SIDELENGTH;
+		x -= (x % BodyPiece.SIZE);
+		y = SnakeView.SIDELENGTH;
+		y -= (x % BodyPiece.SIZE);
+		BodyPiece p = new BodyPiece(Color.MAGENTA, x, y);
+		return p;
+	}
 }

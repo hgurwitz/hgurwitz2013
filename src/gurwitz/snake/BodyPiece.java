@@ -4,6 +4,9 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.EmptyStackException;
+import java.util.Stack;
 
 public class BodyPiece {
 
@@ -13,11 +16,18 @@ public class BodyPiece {
 	public static final int SIZE = 14;
 	private int x, y;
 	private Direction dir;
+	private Stack<Direction> prevDirs;
+	private ArrayList<Dimension> trails;
+
 	private BodyPiece nextNode, prevNode;
 	private Graphics2D g2;
 
 	public BodyPiece getNext() {
 		return nextNode;
+	}
+
+	public Direction getPrevDir() {
+		return prevDirs.peek();
 	}
 
 	public void setNext(BodyPiece nextNode) {
@@ -48,8 +58,9 @@ public class BodyPiece {
 		this.prevNode = prevNode;
 	}
 
-	public void setDir(Direction dir) {
-		this.dir = dir;
+	public void setDir(Direction newDir) {
+		prevDirs.push(this.dir);
+		this.dir = newDir;
 	}
 
 	public Color getColor() {
@@ -65,6 +76,14 @@ public class BodyPiece {
 		this.x = x;
 		this.y = y;
 		dir = Direction.LEFT;
+		prevDirs = new Stack<Direction>();
+		prevDirs.push(dir);
+		trails = new ArrayList<Dimension>();
+	}
+
+	public BodyPiece(int x, int y, Direction dir) {
+		this(x, y);
+		prevDirs.push(dir);
 	}
 
 	public BodyPiece(int x, int y) {
@@ -76,9 +95,21 @@ public class BodyPiece {
 		g2.setComposite(ALPHA);
 		g.setColor(color);
 		g.fillRoundRect(x, y, SIZE, SIZE, 10, 10);
+		if (nextNode != null) {
+			nextNode.paint(g);
+		}
+		if (prevNode == null) { // head
+			trails.add(new Dimension(x, y));
+			g.setColor(Color.black);
+			for (Dimension d : trails) {
+				g.drawRoundRect(d.getX(), d.getY(), SIZE, SIZE, 10, 10);
+			}
+		}
+
 	}
 
-	public void move() {
+	public void move(int numPiece) {
+		System.out.println("MOVE called" + numPiece);
 		switch (dir) {
 		case UP:
 			y -= SIZE;
@@ -94,10 +125,74 @@ public class BodyPiece {
 			break;
 		}
 		if (nextNode != null) {
-			nextNode.move();
+			nextNode.move(++numPiece);
 			nextNode.setDir(dir);
 		}
 
+	}
+
+	public void moveBackward(int numPiece) {
+		System.out.println("MOVE BACKWARD called" + numPiece);
+		if (prevNode == null) { // head
+
+			switch (dir) {
+			case UP:
+				y += SIZE;
+				break;
+			case DOWN:
+				y -= SIZE;
+				break;
+			case LEFT:
+				x += SIZE;
+				break;
+			case RIGHT:
+				x -= SIZE;
+				break;
+			}
+			revertToPrevDir();
+		} else {
+			try {
+				revertToPrevDir();
+			} catch (EmptyStackException e) {
+				throw e;
+			}
+
+			switch (dir) {
+			case UP:
+				y += SIZE;
+				break;
+			case DOWN:
+				y -= SIZE;
+				break;
+			case LEFT:
+				x += SIZE;
+				break;
+			case RIGHT:
+				x -= SIZE;
+				break;
+			}
+			// revertToPrevDir();
+		}
+
+		if (nextNode != null) {
+			try {
+				nextNode.moveBackward(++numPiece);
+			} catch (EmptyStackException e) {
+				// the next piece didn't exist then...remove it
+				nextNode = null;
+				System.out.println("Removed last piece");
+
+			}
+
+		}
+	}
+
+	private void revertToPrevDir() throws EmptyStackException {
+		try {
+			dir = prevDirs.pop();
+		} catch (EmptyStackException e) {
+			throw e;
+		}
 	}
 
 	public Direction getDir() {
@@ -129,6 +224,17 @@ public class BodyPiece {
 		return false;
 	}
 
+	public boolean detectCollisionWithOtherSnake(SnakeBody snake) {
+		BodyPiece next = snake.getHead();
+		while (next != null) {
+			if (detectCollisionWithAnotherPiece(this, next.getX(), next.getY())) {
+				return true;
+			}
+			next = next.getNext();
+		}
+		return false;
+	}
+
 	public void setX(int x) {
 		this.x = x;
 	}
@@ -151,6 +257,34 @@ public class BodyPiece {
 			return true;
 		}
 		return false;
+	}
+
+	private class Dimension {
+		private int x;
+		private int y;
+
+		public int getX() {
+			return x;
+		}
+
+		public void setX(int x) {
+			this.x = x;
+		}
+
+		public int getY() {
+			return y;
+		}
+
+		public void setY(int y) {
+			this.y = y;
+		}
+
+		public Dimension(int x, int y) {
+			super();
+			this.x = x;
+			this.y = y;
+		}
+
 	}
 
 }

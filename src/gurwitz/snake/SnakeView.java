@@ -28,6 +28,7 @@ public class SnakeView extends JComponent {
 		super.paintComponent(g);
 		controller.getFood().paint(g);
 		controller.getSnake().paint(g);
+		controller.getComputerSnake().paint(g);
 		controller.checkGameStuff();
 
 		repaint();

@@ -47,7 +47,7 @@ public class KeyboardListener implements KeyListener {
 			}
 
 		} else {
-			System.out.println("Old Snakey is made by Bracha and co!");
+			System.out.println("error--snake is null");
 		}
 
 	}
