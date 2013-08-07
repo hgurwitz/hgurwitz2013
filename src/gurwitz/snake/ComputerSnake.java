@@ -44,25 +44,26 @@ public class ComputerSnake extends SnakeBody {
 		head.move(0);
 		// if collision then undo
 
-		// while (super.detectCollision()) {
-		// if (super.detectCollision()) {
-		// head.undoMove();
-		// then move different direction
-		/*
-		 * Direction[] dirArray = Direction.values();
-		 * for (Direction d : dirArray) {
-		 * // if d is not new dir (that resulted in collision) or opp of
-		 * // current dir
-		 * if (!d.equals(head.getDir())
-		 * && !d.equals(dirsOpps.get(currdir))) {
-		 * head.setDir(d);
-		 * System.out.println("changing dir to " + d.toString());
-		 * }
-		 * }
-		 */
-		// head.move();
-		// System.out.println("Undid move then moved");
-		// }
+		while (super.detectCollision()) {
+			// if (super.detectCollision()) {
+			head.moveBackward(0);
+			// then move different direction
+
+			Direction[] dirArray = Direction.values();
+			for (Direction d : dirArray) {
+				// if d is not new dir (that resulted in collision) or opp of
+				// current dir
+				if (!d.equals(head.getDir())
+						&& !d.equals(dirsOpps.get(currdir))) {
+					head.setDir(d);
+					System.out.println("changing dir to " + d.toString());
+				}
+			}
+
+			// head.setDir(Direction.LEFT);
+			head.move(0);
+			// System.out.println("Undid move then moved");
+		}
 
 	}
 

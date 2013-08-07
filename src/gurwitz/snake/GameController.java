@@ -36,7 +36,7 @@ public class GameController {
 				snake, food);
 		snake.setOtherSnake(computerSnake);
 		decreaseTimeIncrementBy = 8;
-		timer = new MoveTimer(1500, 50);
+		timer = new MoveTimer(100, 50);
 		counter = 0;
 	}
 
@@ -57,18 +57,9 @@ public class GameController {
 
 			if (timer.isTimeToMove()) {
 				System.out.println(counter);
-				// snake.move();
-				if (counter <= 10) {
-					computerSnake.move();
-				} else if (counter > 10 && counter < 20) {
-					computerSnake.undoMove();
-					System.out.println("Called undomove from game controller");
-				} else {
-					if (counter > 20) {
-						gameOver = true;
-						timer.setPaused(true);
-					}
-				}
+
+				computerSnake.move();
+				snake.move();
 				System.out.println(counter);
 				counter++;
 			}

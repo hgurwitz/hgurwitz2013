@@ -17,7 +17,7 @@ public class BodyPiece {
 	private int x, y;
 	private Direction dir;
 	private Stack<Direction> prevDirs;
-	private ArrayList<Dimension> trails;
+	// private ArrayList<Dimension> trails;
 
 	private BodyPiece nextNode, prevNode;
 	private Graphics2D g2;
@@ -78,7 +78,7 @@ public class BodyPiece {
 		dir = Direction.LEFT;
 		prevDirs = new Stack<Direction>();
 		prevDirs.push(dir);
-		trails = new ArrayList<Dimension>();
+		// trails = new ArrayList<Dimension>();
 	}
 
 	public BodyPiece(int x, int y, Direction dir) {
@@ -98,18 +98,18 @@ public class BodyPiece {
 		if (nextNode != null) {
 			nextNode.paint(g);
 		}
-		if (prevNode == null) { // head
-			trails.add(new Dimension(x, y));
-			g.setColor(Color.black);
-			for (Dimension d : trails) {
-				g.drawRoundRect(d.getX(), d.getY(), SIZE, SIZE, 10, 10);
-			}
-		}
+		// if (prevNode == null) { // head
+		// trails.add(new Dimension(x, y));
+		// g.setColor(Color.black);
+		// for (Dimension d : trails) {
+		// g.drawRoundRect(d.getX(), d.getY(), SIZE, SIZE, 10, 10);
+		// }
+		// }
 
 	}
 
 	public void move(int numPiece) {
-		System.out.println("MOVE called" + numPiece);
+		// System.out.println("MOVE called" + numPiece);
 		switch (dir) {
 		case UP:
 			y -= SIZE;
@@ -132,23 +132,10 @@ public class BodyPiece {
 	}
 
 	public void moveBackward(int numPiece) {
-		System.out.println("MOVE BACKWARD called" + numPiece);
+		// System.out.println("MOVE BACKWARD called" + numPiece);
 		if (prevNode == null) { // head
 
-			switch (dir) {
-			case UP:
-				y += SIZE;
-				break;
-			case DOWN:
-				y -= SIZE;
-				break;
-			case LEFT:
-				x += SIZE;
-				break;
-			case RIGHT:
-				x -= SIZE;
-				break;
-			}
+			undoMove();
 			revertToPrevDir();
 		} else {
 			try {
@@ -157,21 +144,7 @@ public class BodyPiece {
 				throw e;
 			}
 
-			switch (dir) {
-			case UP:
-				y += SIZE;
-				break;
-			case DOWN:
-				y -= SIZE;
-				break;
-			case LEFT:
-				x += SIZE;
-				break;
-			case RIGHT:
-				x -= SIZE;
-				break;
-			}
-			// revertToPrevDir();
+			undoMove();
 		}
 
 		if (nextNode != null) {
@@ -184,6 +157,23 @@ public class BodyPiece {
 
 			}
 
+		}
+	}
+
+	private void undoMove() {
+		switch (dir) {
+		case UP:
+			y += SIZE;
+			break;
+		case DOWN:
+			y -= SIZE;
+			break;
+		case LEFT:
+			x += SIZE;
+			break;
+		case RIGHT:
+			x -= SIZE;
+			break;
 		}
 	}
 
@@ -259,32 +249,34 @@ public class BodyPiece {
 		return false;
 	}
 
-	private class Dimension {
-		private int x;
-		private int y;
-
-		public int getX() {
-			return x;
-		}
-
-		public void setX(int x) {
-			this.x = x;
-		}
-
-		public int getY() {
-			return y;
-		}
-
-		public void setY(int y) {
-			this.y = y;
-		}
-
-		public Dimension(int x, int y) {
-			super();
-			this.x = x;
-			this.y = y;
-		}
-
-	}
+	/*
+	 * private class Dimension {
+	 * private int x;
+	 * private int y;
+	 * 
+	 * public int getX() {
+	 * return x;
+	 * }
+	 * 
+	 * public void setX(int x) {
+	 * this.x = x;
+	 * }
+	 * 
+	 * public int getY() {
+	 * return y;
+	 * }
+	 * 
+	 * public void setY(int y) {
+	 * this.y = y;
+	 * }
+	 * 
+	 * public Dimension(int x, int y) {
+	 * super();
+	 * this.x = x;
+	 * this.y = y;
+	 * }
+	 * 
+	 * }
+	 */
 
 }
