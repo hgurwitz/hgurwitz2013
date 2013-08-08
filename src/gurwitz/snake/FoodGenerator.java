@@ -6,10 +6,12 @@ import java.util.Random;
 public class FoodGenerator {
 
 	private SnakeBody snake;
+	private SnakeBody computerSnake;
 	private Random random;
 
-	public FoodGenerator(SnakeBody snake) {
+	public FoodGenerator(SnakeBody snake, SnakeBody computerSnake) {
 		this.snake = snake;
+		this.computerSnake = computerSnake;
 		this.random = new Random();
 	}
 
@@ -21,18 +23,21 @@ public class FoodGenerator {
 										// snake
 			y = (random.nextInt(SnakeView.SIDELENGTH));
 			y -= (y % BodyPiece.SIZE);
-		} while (snake.detectCollisionsWithAPiece(x, y));
+		} while (snake.detectCollisionsWithAPiece(x, y)
+				|| computerSnake.detectCollisionsWithAPiece(x, y));
 		BodyPiece p = new BodyPiece(Color.MAGENTA, x, y);
 		return p;
 	}
 
-	public BodyPiece getNewPieceOfFoodAtEdgeOfBoard() {
-		int x, y;
-		x = SnakeView.SIDELENGTH;
-		x -= (x % BodyPiece.SIZE);
-		y = SnakeView.SIDELENGTH;
-		y -= (x % BodyPiece.SIZE);
-		BodyPiece p = new BodyPiece(Color.MAGENTA, x, y);
-		return p;
-	}
+	/*
+	 * public BodyPiece getNewPieceOfFoodAtEdgeOfBoard() {
+	 * int x, y;
+	 * x = SnakeView.SIDELENGTH;
+	 * x -= (x % BodyPiece.SIZE);
+	 * y = SnakeView.SIDELENGTH;
+	 * y -= (x % BodyPiece.SIZE);
+	 * BodyPiece p = new BodyPiece(Color.MAGENTA, x, y);
+	 * return p;
+	 * }
+	 */
 }

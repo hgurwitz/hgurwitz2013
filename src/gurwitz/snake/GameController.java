@@ -26,14 +26,15 @@ public class GameController {
 		loc -= loc % BodyPiece.SIZE;
 		snake = new SnakeBody(new BodyPiece(loc, loc), initialSnakeLength, null);
 		listener = new KeyboardListener(snake, this);
-		generator = new FoodGenerator(snake);
-		food = generator.getNewPieceOfFood();
 		// food = generator.getNewPieceOfFoodAtEdgeOfBoard();
 		loc = SnakeView.SIDELENGTH / 4;
 		loc -= loc % BodyPiece.SIZE;
 		computerSnake = new ComputerSnake(
 				new BodyPiece(Color.ORANGE, loc, loc), initialSnakeLength,
-				snake, food);
+				snake);
+		generator = new FoodGenerator(snake, snake);
+		food = generator.getNewPieceOfFood();
+		computerSnake.setFood(food);
 		snake.setOtherSnake(computerSnake);
 		decreaseTimeIncrementBy = 8;
 		timer = new MoveTimer(100, 50);
@@ -56,71 +57,59 @@ public class GameController {
 		if (!gameOver) {
 
 			if (timer.isTimeToMove()) {
-				System.out.println(counter);
-
+				// System.out.println(counter++);
 				computerSnake.move();
-				snake.move();
-				System.out.println(counter);
-				counter++;
+				// snake.move();
 			}
 
 			if (snake.detectCollisionsWithAPiece(food.getX(), food.getY())) {
-				// try {
-				// new FoundFoodSoundPlayer().play();
-				// } catch (UnsupportedAudioFileException e) {
-				// e.printStackTrace();
-				// } catch (IOException e) {
-				// e.printStackTrace();
-				// } catch (LineUnavailableException e) {
-				// e.printStackTrace();
-				// }
-				food = generator.getNewPieceOfFood();
-				computerSnake.setFood(food);
-				snake.addPiece();
-
-				// timer.setTimeIncrement(timer.getTimeIncrement()
-				// - decreaseTimeIncrementBy);
-
+				foundFood(snake);
 			}
 
 			if (computerSnake.detectCollisionsWithAPiece(food.getX(),
 					food.getY())) {
-				// try {
-				// new FoundFoodSoundPlayer().play();
-				// } catch (UnsupportedAudioFileException e) {
-				// e.printStackTrace();
-				// } catch (IOException e) {
-				// e.printStackTrace();
-				// } catch (LineUnavailableException e) {
-				// e.printStackTrace();
-				// }
-
-				food = generator.getNewPieceOfFood();
-				computerSnake.setFood(food);
-				computerSnake.addPiece();
-				// timer.setTimeIncrement(timer.getTimeIncrement()
-				// - decreaseTimeIncrementBy);
-
+				foundFood(computerSnake);
 			}
 
-			if (snake.detectCollision()) {// || computerSnake.detectCollision())
-											// {
-				gameOver = true;
-				timer.setPaused(true);
-				System.out.println("Detected snake collision");
-				// try {
-				// new GameOverSoundPlayer().play();
-				// } catch (UnsupportedAudioFileException e) {
-				// e.printStackTrace();
-				// } catch (IOException e) {
-				// e.printStackTrace();
-				// } catch (LineUnavailableException e) {
-				// e.printStackTrace();
-				// }
+			if (snake.detectCollision() || computerSnake.detectCollision()) {
+				detectedCollision();
 			}
 
 		}
 
+	}
+
+	private void detectedCollision() {
+		gameOver = true;
+		timer.setPaused(true);
+		System.out.println("Detected snake collision");
+		try {
+			new GameOverSoundPlayer().play();
+		} catch (UnsupportedAudioFileException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (LineUnavailableException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void foundFood(SnakeBody snake) {
+		try {
+			new FoundFoodSoundPlayer().play();
+		} catch (UnsupportedAudioFileException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (LineUnavailableException e) {
+			e.printStackTrace();
+		}
+
+		food = generator.getNewPieceOfFood();
+		computerSnake.setFood(food);
+		snake.addPiece();
+		// timer.setTimeIncrement(timer.getTimeIncrement()
+		// - decreaseTimeIncrementBy);
 	}
 
 	public void pauseAndUnPause() {

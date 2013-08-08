@@ -4,7 +4,6 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
 import java.util.EmptyStackException;
 import java.util.Stack;
 
@@ -17,7 +16,6 @@ public class BodyPiece {
 	private int x, y;
 	private Direction dir;
 	private Stack<Direction> prevDirs;
-	// private ArrayList<Dimension> trails;
 
 	private BodyPiece nextNode, prevNode;
 	private Graphics2D g2;
@@ -78,7 +76,6 @@ public class BodyPiece {
 		dir = Direction.LEFT;
 		prevDirs = new Stack<Direction>();
 		prevDirs.push(dir);
-		// trails = new ArrayList<Dimension>();
 	}
 
 	public BodyPiece(int x, int y, Direction dir) {
@@ -98,14 +95,11 @@ public class BodyPiece {
 		if (nextNode != null) {
 			nextNode.paint(g);
 		}
-		// if (prevNode == null) { // head
-		// trails.add(new Dimension(x, y));
-		// g.setColor(Color.black);
-		// for (Dimension d : trails) {
-		// g.drawRoundRect(d.getX(), d.getY(), SIZE, SIZE, 10, 10);
-		// }
-		// }
 
+	}
+
+	public void move() {
+		move(0);
 	}
 
 	public void move(int numPiece) {
@@ -129,6 +123,10 @@ public class BodyPiece {
 			nextNode.setDir(dir);
 		}
 
+	}
+
+	public void moveBackward() {
+		moveBackward(0);
 	}
 
 	public void moveBackward(int numPiece) {
@@ -248,35 +246,5 @@ public class BodyPiece {
 		}
 		return false;
 	}
-
-	/*
-	 * private class Dimension {
-	 * private int x;
-	 * private int y;
-	 * 
-	 * public int getX() {
-	 * return x;
-	 * }
-	 * 
-	 * public void setX(int x) {
-	 * this.x = x;
-	 * }
-	 * 
-	 * public int getY() {
-	 * return y;
-	 * }
-	 * 
-	 * public void setY(int y) {
-	 * this.y = y;
-	 * }
-	 * 
-	 * public Dimension(int x, int y) {
-	 * super();
-	 * this.x = x;
-	 * this.y = y;
-	 * }
-	 * 
-	 * }
-	 */
 
 }
