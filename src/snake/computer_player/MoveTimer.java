@@ -1,4 +1,4 @@
-package gurwitz.snake;
+package snake.computer_player;
 
 public class MoveTimer {
 

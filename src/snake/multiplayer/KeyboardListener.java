@@ -1,7 +1,9 @@
-package gurwitz.snake;
+package snake.multiplayer;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
+import snake.Direction;
 
 public class KeyboardListener implements KeyListener {
 

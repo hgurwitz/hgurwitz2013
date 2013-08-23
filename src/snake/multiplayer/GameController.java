@@ -1,4 +1,4 @@
-package gurwitz.snake;
+package snake.multiplayer;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -18,7 +18,6 @@ public class GameController {
 	private ComputerSnake computerSnake;
 	private KeyboardListener listener;
 	private boolean gameOver = false;
-	private int counter;
 
 	public GameController() {
 		initialSnakeLength = 7;
@@ -26,7 +25,6 @@ public class GameController {
 		loc -= loc % BodyPiece.SIZE;
 		snake = new SnakeBody(new BodyPiece(loc, loc), initialSnakeLength, null);
 		listener = new KeyboardListener(snake, this);
-		// food = generator.getNewPieceOfFoodAtEdgeOfBoard();
 		loc = SnakeView.SIDELENGTH / 4;
 		loc -= loc % BodyPiece.SIZE;
 		computerSnake = new ComputerSnake(
@@ -38,7 +36,6 @@ public class GameController {
 		snake.setOtherSnake(computerSnake);
 		decreaseTimeIncrementBy = 8;
 		timer = new MoveTimer(100, 50);
-		counter = 0;
 	}
 
 	public KeyboardListener getListener() {
@@ -57,9 +54,8 @@ public class GameController {
 		if (!gameOver) {
 
 			if (timer.isTimeToMove()) {
-				// System.out.println(counter++);
 				computerSnake.move();
-				// snake.move();
+				snake.move();
 			}
 
 			if (snake.detectCollisionsWithAPiece(food.getX(), food.getY())) {
@@ -83,27 +79,31 @@ public class GameController {
 		gameOver = true;
 		timer.setPaused(true);
 		System.out.println("Detected snake collision");
-		try {
-			new GameOverSoundPlayer().play();
-		} catch (UnsupportedAudioFileException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (LineUnavailableException e) {
-			e.printStackTrace();
-		}
+		/*
+		 * try {
+		 * new GameOverSoundPlayer().play();
+		 * } catch (UnsupportedAudioFileException e) {
+		 * e.printStackTrace();
+		 * } catch (IOException e) {
+		 * e.printStackTrace();
+		 * } catch (LineUnavailableException e) {
+		 * e.printStackTrace();
+		 * }
+		 */
 	}
 
 	private void foundFood(SnakeBody snake) {
-		try {
-			new FoundFoodSoundPlayer().play();
-		} catch (UnsupportedAudioFileException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (LineUnavailableException e) {
-			e.printStackTrace();
-		}
+		/*
+		 * try {
+		 * new FoundFoodSoundPlayer().play();
+		 * } catch (UnsupportedAudioFileException e) {
+		 * e.printStackTrace();
+		 * } catch (IOException e) {
+		 * e.printStackTrace();
+		 * } catch (LineUnavailableException e) {
+		 * e.printStackTrace();
+		 * }
+		 */
 
 		food = generator.getNewPieceOfFood();
 		computerSnake.setFood(food);

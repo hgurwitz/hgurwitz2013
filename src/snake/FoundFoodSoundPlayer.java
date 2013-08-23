@@ -1,4 +1,4 @@
-package gurwitz.snake;
+package snake;
 
 import java.io.IOException;
 

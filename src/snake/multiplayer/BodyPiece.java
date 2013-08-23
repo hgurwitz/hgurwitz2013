@@ -1,4 +1,4 @@
-package gurwitz.snake;
+package snake.multiplayer;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.EmptyStackException;
 import java.util.Stack;
+
+import snake.Direction;
 
 public class BodyPiece {
 
@@ -103,7 +105,6 @@ public class BodyPiece {
 	}
 
 	public void move(int numPiece) {
-		// System.out.println("MOVE called" + numPiece);
 		switch (dir) {
 		case UP:
 			y -= SIZE;
@@ -130,7 +131,6 @@ public class BodyPiece {
 	}
 
 	public void moveBackward(int numPiece) {
-		// System.out.println("MOVE BACKWARD called" + numPiece);
 		if (prevNode == null) { // head
 
 			undoMove();

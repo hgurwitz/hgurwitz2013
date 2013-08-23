@@ -1,4 +1,4 @@
-package gurwitz.snake;
+package snake.single_player;
 
 import java.awt.Dimension;
 

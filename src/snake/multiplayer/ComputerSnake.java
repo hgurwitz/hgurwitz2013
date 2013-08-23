@@ -1,8 +1,10 @@
-package gurwitz.snake;
+package snake.multiplayer;
 
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Random;
+
+import snake.Direction;
 
 public class ComputerSnake extends SnakeBody {
 

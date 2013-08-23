@@ -1,4 +1,4 @@
-package gurwitz.snake;
+package snake.computer_player;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -18,7 +18,6 @@ public class SnakeView extends JComponent {
 		super();
 		this.controller = controller;
 		setPreferredSize(new Dimension(SIDELENGTH, SIDELENGTH));
-		addKeyListener(controller.getListener());
 		setFocusable(true);
 		setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 	}
@@ -27,7 +26,9 @@ public class SnakeView extends JComponent {
 
 		super.paintComponent(g);
 		controller.getFood().paint(g);
-		controller.getSnake().paint(g);
+		for (Piece p : controller.getObstacles()) {
+			p.paint(g);
+		}
 		controller.getComputerSnake().paint(g);
 		controller.checkGameStuff();
 

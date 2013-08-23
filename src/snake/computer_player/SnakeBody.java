@@ -1,20 +1,20 @@
-package gurwitz.snake;
+package snake.computer_player;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
 
+import snake.Direction;
+
 public class SnakeBody {
 
-	// private ArrayList<BodyPiece> pieces;
 	protected BodyPiece head;
 	private BodyPiece tail;
 	private int initialLength;
-	private SnakeBody otherSnake;
+	private ArrayList<Piece> obstacles;
 
-	public SnakeBody(BodyPiece head, int initialLength, SnakeBody otherSnake) {
-		// pieces = new ArrayList<BodyPiece>();
-		this.otherSnake = otherSnake;
-		// pieces.add(head);
+	public SnakeBody(BodyPiece head, int initialLength,
+			ArrayList<Piece> obstacles) {
+		this.obstacles = obstacles;
 		this.head = head;
 		this.tail = head;
 		this.initialLength = initialLength;
@@ -26,7 +26,6 @@ public class SnakeBody {
 
 	public void addPiece() {
 		BodyPiece newPiece = new BodyPiece(0, 0, tail.getPrevDir());
-		// newPiece.setColor(head.getColor());
 		newPiece.setColor(tail.getColor());
 		newPiece.setDir(tail.getDir());
 
@@ -50,7 +49,6 @@ public class SnakeBody {
 		newPiece.setX(x);
 		newPiece.setY(y);
 
-		// pieces.add(newPiece);
 		newPiece.setPrev(tail);
 		tail.setNext(newPiece);
 		this.tail = newPiece;
@@ -66,9 +64,6 @@ public class SnakeBody {
 
 	public void paint(Graphics g) {
 		head.paint(g);
-		// for (BodyPiece p : pieces) {
-		// p.paint(g);
-		// }
 	}
 
 	public void move() {
@@ -81,7 +76,7 @@ public class SnakeBody {
 
 	public boolean detectCollision() {
 		return head.detectCollision()
-				|| head.detectCollisionWithOtherSnake(otherSnake);
+				|| head.detectCollisionWithObstacles(obstacles);
 	}
 
 	public boolean detectCollisionsWithAPiece(int pieceX, int pieceY) {
@@ -104,11 +99,7 @@ public class SnakeBody {
 		this.tail = tail;
 	}
 
-	// public int getLength() {
-	// return pieces.size();
-	// }
-
-	public void setOtherSnake(SnakeBody other) {
-		this.otherSnake = other;
+	public void setObstacles(ArrayList<Piece> obstacles) {
+		this.obstacles = obstacles;
 	}
 }
