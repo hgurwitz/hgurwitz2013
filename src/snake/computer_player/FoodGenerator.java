@@ -9,11 +9,14 @@ public class FoodGenerator {
 	private ArrayList<Piece> obstacles;
 	private ComputerSnake computerSnake;
 	private Random random;
+	private Board board;
 
-	public FoodGenerator(ComputerSnake computerSnake, ArrayList<Piece> obstacles) {
+	public FoodGenerator(ComputerSnake computerSnake,
+			ArrayList<Piece> obstacles, Board board) {
 		this.computerSnake = computerSnake;
 		this.obstacles = obstacles;
 		this.random = new Random();
+		this.board = board;
 	}
 
 	public BodyPiece getNewPieceOfFood() {
@@ -24,8 +27,9 @@ public class FoodGenerator {
 										// snake
 			y = (random.nextInt(SnakeView.SIDELENGTH));
 			y -= (y % BodyPiece.SIZE);
-		} while (computerSnake.detectCollisionsWithAPiece(x, y)
-				|| checkForCollisionWithObstacles(x, y));
+		} // while (computerSnake.detectCollisionsWithAPiece(x, y)
+			// || checkForCollisionWithObstacles(x, y));
+		while (board.getContentsOfASquare(x, y) != SquareContents.EMPTY);
 		BodyPiece p = new BodyPiece(Color.MAGENTA, x, y);
 		return p;
 	}

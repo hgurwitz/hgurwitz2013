@@ -14,8 +14,37 @@ public class BodyPiece extends Piece {
 
 	private Direction dir;
 	private Stack<Direction> prevDirs;
-
 	private BodyPiece nextNode, prevNode;
+
+	public BodyPiece(Color color, int x, int y) {
+		this(new Piece(color, x, y));
+	}
+
+	public BodyPiece(Color color, int x, int y, Direction dir) {
+		this(new Piece(color, x, y), dir);
+	}
+
+	public BodyPiece(Piece p) {
+		this(p, Direction.LEFT);
+	}
+
+	public BodyPiece(Piece p, Direction dir) {
+		super(p);
+		this.dir = dir;
+		prevDirs = new Stack<Direction>();
+		prevDirs.push(dir);
+	}
+
+	public BodyPiece(int x, int y, Direction dir) {
+		super(Color.CYAN, x, y);
+		this.dir = dir;
+		prevDirs = new Stack<Direction>();
+		prevDirs.push(dir);
+	}
+
+	public BodyPiece(BodyPiece p) {
+		this(new Piece(p.getColor(), p.getXY()), p.getDir());
+	}
 
 	public BodyPiece getNext() {
 		return nextNode;
@@ -58,24 +87,11 @@ public class BodyPiece extends Piece {
 		this.dir = newDir;
 	}
 
-	public BodyPiece(Color color, int x, int y) {
-		super(color, x, y);
-		dir = Direction.LEFT;
-		prevDirs = new Stack<Direction>();
-		prevDirs.push(dir);
-	}
-
-	public BodyPiece(int x, int y, Direction dir) {
-		super(Color.CYAN, x, y);
-		prevDirs = new Stack<Direction>();
-		prevDirs.push(dir);
-	}
-
 	public void paint(Graphics g) {
 		g2 = (Graphics2D) g;
 		g2.setComposite(ALPHA);
 		g.setColor(color);
-		g.fillRoundRect(x, y, SIZE, SIZE, 10, 10);
+		g.fillRoundRect(xy.getX(), xy.getY(), SIZE, SIZE, 10, 10);
 		if (nextNode != null) {
 			nextNode.paint(g);
 		}
@@ -90,16 +106,16 @@ public class BodyPiece extends Piece {
 		// System.out.println("MOVE called" + numPiece);
 		switch (dir) {
 		case UP:
-			y -= SIZE;
+			setY(xy.getY() - SIZE);
 			break;
 		case DOWN:
-			y += SIZE;
+			setY(xy.getY() + SIZE);
 			break;
 		case LEFT:
-			x -= SIZE;
+			setX(xy.getX() - SIZE);
 			break;
 		case RIGHT:
-			x += SIZE;
+			setX(xy.getX() + SIZE);
 			break;
 		}
 		if (nextNode != null) {
@@ -140,16 +156,16 @@ public class BodyPiece extends Piece {
 	private void undoMove() {
 		switch (dir) {
 		case UP:
-			y += SIZE;
+			setY(xy.getY() + SIZE);
 			break;
 		case DOWN:
-			y -= SIZE;
+			setY(xy.getY() - SIZE);
 			break;
 		case LEFT:
-			x += SIZE;
+			setX(xy.getX() + SIZE);
 			break;
 		case RIGHT:
-			x -= SIZE;
+			setX(xy.getX() - SIZE);
 			break;
 		}
 	}
@@ -166,32 +182,46 @@ public class BodyPiece extends Piece {
 		return dir;
 	}
 
-	public boolean detectCollision() {
+	// public boolean detectCollision() {
 
-		return detectCollisionWithWalls()
-				|| detectCollisionWithBody(this.x, this.y);
-	}
+	// return detectCollisionWithWalls() || detectCollisionWithBody(xy);
+	// }
 
-	public boolean detectCollisionWithBody(int xTest, int yTest) {
-		BodyPiece next = nextNode;
-		while (next != null) {
-			if (detectCollisionWithAnotherPiece(next, xTest, yTest)) {
-				return true;
-			}
-			next = next.getNext();
+	// public boolean detectCollision(Board board) {
+
+	// return detectCollisionWithWalls() || detectCollisionWithBody(board);
+	// }
+
+	// public boolean detectCollisionWithBody(XYCoordinate xyTest) {
+	// return detectCollisionWithBody(xyTest.getX(), xyTest.getY());
+	// }
+
+	public boolean detectCollisionWithBody(Board board) {
+		// (int pieceX, int pieceY) {
+		// O(1)
+		// only called when this piece is the head
+		/*
+		 * BodyPiece next = nextNode; // don't check head
+		 * while (next != null) {
+		 * if (detectCollisionWithAnotherPiece(next, pieceX, pieceY)) {
+		 * return true;
+		 * }
+		 * next = next.getNext();
+		 * }
+		 * return false;
+		 */
+
+		if (board.getContentsOfASquare(xy).equals(SquareContents.SNAKEPIECE)) {
+			System.out.println("Detected collision with my body");
 		}
-		return false;
-	}
-
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	public void setY(int y) {
-		this.y = y;
+		return (board.getContentsOfASquare(xy)
+				.equals(SquareContents.SNAKEPIECE));
 	}
 
 	public boolean detectCollisionWithWalls() {
+		// O(1)
+		// only called when this piece is the head
+		int x = xy.getX(), y = xy.getY();
 		if (x < 0 || ((x + SIZE) > (SnakeView.SIDELENGTH)) || y < 0
 				|| ((y + SIZE) > (SnakeView.SIDELENGTH))) {
 			return true;
@@ -199,13 +229,16 @@ public class BodyPiece extends Piece {
 		return false;
 	}
 
-	public boolean detectCollisionWithObstacles(ArrayList<Piece> obstacles) {
-		for (Piece p : obstacles) {
-			if (detectCollisionWithAnotherPiece(this, p.getX(), p.getY())) {
-				return true;
-			}
-		}
-		return false;
+	public boolean detectCollisionWithObstacles(Board board) { // O(1)
+		// only called when this piece is the head
+		// (ArrayList<Piece> obstacles) {
+		// for (Piece p : obstacles) {
+		// if (detectCollisionWithAnotherPiece(this, p.getXY())) {
+		// return true;
+		// }
+		// }
+		// return false;
+		return (board.getContentsOfASquare(xy).equals(SquareContents.OBSTACLE));
 	}
 
 }

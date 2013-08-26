@@ -3,6 +3,8 @@ package snake.computer_player;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import snake.Direction;
+
 public class GameController {
 
 	private MoveTimer timer;
@@ -13,22 +15,24 @@ public class GameController {
 	private ArrayList<Piece> obstacles;
 	private ComputerSnake computerSnake;
 	private boolean gameOver = false;
-	private int counter;
+	private Board board;
 
 	public GameController() {
+		board = new Board();
 		initialSnakeLength = 7;
 		int loc = SnakeView.SIDELENGTH / 3;
 		loc -= loc % Piece.SIZE;
 		initializeObstacles(8);
-		computerSnake = new ComputerSnake(
-				new BodyPiece(Color.ORANGE, loc, loc), initialSnakeLength,
-				obstacles);
-		generator = new FoodGenerator(computerSnake, obstacles);
+		computerSnake = new ComputerSnake(new BodyPiece(Color.ORANGE, loc, loc,
+				Direction.LEFT), initialSnakeLength, obstacles, board);
+		generator = new FoodGenerator(computerSnake, obstacles, board);
 		food = generator.getNewPieceOfFood();
 		computerSnake.setFood(food);
 		decreaseTimeIncrementBy = 8;
 		timer = new MoveTimer(100, 50);
-		counter = 0;
+		board.setFood(food);
+		board.setSnake(computerSnake);
+		board.setObstacles(obstacles);
 	}
 
 	private void initializeObstacles(int howMany) {
@@ -61,15 +65,17 @@ public class GameController {
 
 			if (timer.isTimeToMove()) {
 				computerSnake.move();
-			}
 
-			if (computerSnake.detectCollisionsWithAPiece(food.getX(),
-					food.getY())) {
-				foundFood();
-			}
+				if (computerSnake.detectCollisionsWithFood(food.getXY())) {
+					foundFood();
+				}
 
-			if (computerSnake.detectCollision()) {
-				detectedCollision();
+				if (computerSnake.detectCollision()) {
+					System.out.println("Detected snake collision");
+					detectedCollision();
+				}
+				board.setSnake(computerSnake.getHead());
+				board.setEmpty(computerSnake.getOldTail());
 			}
 
 		}
@@ -105,10 +111,12 @@ public class GameController {
 		 * e.printStackTrace();
 		 * }
 		 */
-
+		board.setEmpty(food);
 		food = generator.getNewPieceOfFood();
+		board.setFood(food);
 		computerSnake.setFood(food);
 		computerSnake.addPiece();
+		board.setSnake(computerSnake.getTail());
 		// timer.setTimeIncrement(timer.getTimeIncrement()
 		// - decreaseTimeIncrementBy);
 	}

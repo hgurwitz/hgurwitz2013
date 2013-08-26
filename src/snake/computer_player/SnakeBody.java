@@ -11,10 +11,13 @@ public class SnakeBody {
 	private BodyPiece tail;
 	private int initialLength;
 	private ArrayList<Piece> obstacles;
+	private BodyPiece oldTail;
+	protected Board board;
 
 	public SnakeBody(BodyPiece head, int initialLength,
-			ArrayList<Piece> obstacles) {
+			ArrayList<Piece> obstacles, Board board) {
 		this.obstacles = obstacles;
+		this.board = board;
 		this.head = head;
 		this.tail = head;
 		this.initialLength = initialLength;
@@ -29,9 +32,10 @@ public class SnakeBody {
 		newPiece.setColor(tail.getColor());
 		newPiece.setDir(tail.getDir());
 
-		int tailX = tail.getX();
-		int tailY = tail.getY();
+		int tailX = tail.getXY().getX();
+		int tailY = tail.getXY().getY();
 		int x = tailX, y = tailY;
+
 		switch (tail.getDir()) {
 		case UP:
 			y = tailY + BodyPiece.SIZE;
@@ -67,7 +71,12 @@ public class SnakeBody {
 	}
 
 	public void move() {
+		oldTail = new BodyPiece(tail);
 		head.move(0);
+	}
+
+	public BodyPiece getOldTail() {
+		return oldTail;
 	}
 
 	public void changeDirection(Direction newDir) {
@@ -75,12 +84,20 @@ public class SnakeBody {
 	}
 
 	public boolean detectCollision() {
-		return head.detectCollision()
-				|| head.detectCollisionWithObstacles(obstacles);
+		// return head.detectCollision(board)
+		// || head.detectCollisionWithObstacles(board);
+		return head.detectCollisionWithWalls()
+				|| head.detectCollisionWithBody(board)
+				|| head.detectCollisionWithObstacles(board);
 	}
 
-	public boolean detectCollisionsWithAPiece(int pieceX, int pieceY) {
-		return head.detectCollisionWithBody(pieceX, pieceY);
+	// public boolean detectCollisionsWithSelf() {
+	// return head.detectCollisionWithBody(head.getXY());
+	// return head.detectCollisionWithBody(board);
+	// }
+
+	public boolean detectCollisionsWithFood(XYCoordinate xy) {
+		return head.getXY().equals(xy);
 	}
 
 	public BodyPiece getHead() {

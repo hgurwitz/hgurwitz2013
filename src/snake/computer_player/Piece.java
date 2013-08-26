@@ -10,8 +10,8 @@ public class Piece {
 	protected static final AlphaComposite ALPHA = AlphaComposite.getInstance(
 			AlphaComposite.SRC_OVER, .6f);
 	protected Color color;
-	public static final int SIZE = 14;
-	protected int x, y;
+	public static final int SIZE = 10;
+	protected XYCoordinate xy;
 	protected Graphics2D g2;
 
 	public Color getColor() {
@@ -24,8 +24,16 @@ public class Piece {
 
 	public Piece(Color color, int x, int y) {
 		this.color = color;
-		this.x = x;
-		this.y = y;
+		this.xy = new XYCoordinate(x, y);
+	}
+
+	public Piece(Color color, XYCoordinate xy) {
+		this.color = color;
+		this.xy = xy;
+	}
+
+	public Piece(Piece p) {
+		this(p.getColor(), p.getXY());
 	}
 
 	public Piece(int x, int y) {
@@ -36,31 +44,38 @@ public class Piece {
 		g2 = (Graphics2D) g;
 		g2.setComposite(ALPHA);
 		g.setColor(color);
-		g.fillRect(x, y, SIZE, SIZE);
+		g.fillRect(xy.getX(), xy.getY(), SIZE, SIZE);
 
 	}
 
-	public int getX() {
-		return x;
+	public XYCoordinate getXY() {
+		return xy;
 	}
 
-	public int getY() {
-		return y;
+	protected boolean detectCollisionWithAnotherPiece(Piece piece,
+			XYCoordinate test) {
+		return (piece.getXY().equals(test));
+	}
+
+	public void setXY(XYCoordinate xy) {
+		this.xy = xy;
+	}
+
+	public void setX(int x) {
+		xy.setX(x);
+	}
+
+	public void setY(int y) {
+		xy.setY(y);
 	}
 
 	protected boolean detectCollisionWithAnotherPiece(Piece piece, int xTest,
 			int yTest) {
-		if (xTest == piece.getX() && yTest == piece.getY()) {
-			return true;
-		}
-		return false;
+		return (piece.getXY().equals(xTest, yTest));
 	}
 
 	protected boolean detectCollisionWithAnotherPiece(int xTest, int yTest) {
-		if (x == xTest && y == yTest) {
-			return true;
-		}
-		return false;
+		return (xy.equals(xTest, yTest));
 	}
 
 }
