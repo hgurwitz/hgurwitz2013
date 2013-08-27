@@ -11,7 +11,7 @@ public class SnakeBody {
 	private BodyPiece tail;
 	private int initialLength;
 	private ArrayList<Piece> obstacles;
-	private BodyPiece oldTail;
+	private XYCoordinate oldTail;
 	protected Board board;
 
 	public SnakeBody(BodyPiece head, int initialLength,
@@ -21,6 +21,7 @@ public class SnakeBody {
 		this.head = head;
 		this.tail = head;
 		this.initialLength = initialLength;
+		oldTail = new XYCoordinate(tail.getXY());
 		for (int i = 0; i < (initialLength - 1); i++) {
 			addPiece();
 		}
@@ -71,11 +72,11 @@ public class SnakeBody {
 	}
 
 	public void move() {
-		oldTail = new BodyPiece(tail);
+		oldTail = new XYCoordinate(tail.getXY());
 		head.move(0);
 	}
 
-	public BodyPiece getOldTail() {
+	public XYCoordinate getOldTail() {
 		return oldTail;
 	}
 

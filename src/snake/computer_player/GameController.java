@@ -52,6 +52,10 @@ public class GameController {
 
 	}
 
+	public Board getBoard() {
+		return board;
+	}
+
 	public BodyPiece getFood() {
 		return food;
 	}

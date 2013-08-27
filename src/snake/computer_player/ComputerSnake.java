@@ -1,21 +1,27 @@
 package snake.computer_player;
 
 import java.awt.Color;
+import java.io.BufferedOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-import java.util.Set;
 import java.util.Stack;
 
 import snake.Direction;
 
 public class ComputerSnake extends SnakeBody {
 
-	private ArrayList<Piece> obstacles;
 	private BodyPiece food;
-	private HashMap<Direction, Direction> dirsOpps;
-	private Random r;
 	private Stack<Square> path;
+	private boolean finishedPath = false;
+	private HashMap<XYCoordinate, Square> squaresMap;
+	private HashMap<XYCoordinate, Square> openList;
+	private HashMap<XYCoordinate, Square> closedList;
+	private Square start;
+	private Square target;
 
 	public ComputerSnake(BodyPiece head, int initialLength,
 			ArrayList<Piece> obstacles, BodyPiece food, Board board) {
@@ -23,13 +29,10 @@ public class ComputerSnake extends SnakeBody {
 		head.setColor(Color.RED);
 		this.food = food;
 		path = new Stack<Square>();
-		// r = new Random();
-		// dirsOpps = new HashMap<Direction, Direction>();
-		// dirsOpps.put(Direction.UP, Direction.DOWN);
-		// dirsOpps.put(Direction.DOWN, Direction.UP);
-		// dirsOpps.put(Direction.LEFT, Direction.RIGHT);
-		// dirsOpps.put(Direction.RIGHT, Direction.LEFT);
-
+		finishedPath = false;
+		squaresMap = board.getSquaresMap();
+		openList = new HashMap<XYCoordinate, Square>();
+		closedList = new HashMap<XYCoordinate, Square>();
 	}
 
 	public ComputerSnake(BodyPiece head, int initialLength,
@@ -40,82 +43,13 @@ public class ComputerSnake extends SnakeBody {
 
 	public void move() {
 		if (path.isEmpty()) {
-			System.out.println("CALLING find path");
 			findPath();
 		}
-		moveToGetToXY(path.pop().getXy());
+		Square s = path.pop();
+		clearSquareSettings(s);
+		moveToGetToXY(s.getXy());
 
 	}
-
-	/*
-	 * public void move() {
-	 * if (food == null) {
-	 * System.out.println("food is null");
-	 * }
-	 * if (head == null) {
-	 * System.out.println("head is null");
-	 * }
-	 * 
-	 * Direction currdir = head.getDir();
-	 * XYCoordinate foodXY = food.getXY(), headXY = head.getXY();
-	 * int foodX = foodXY.getX(), foodY = foodXY.getY(), headX = headXY.getX(),
-	 * headY = headXY
-	 * .getY();
-	 * if (!isThisDirectionGood(foodX, foodY, headX, headY)) {
-	 * 
-	 * if (foodX > headX && currdir != Direction.LEFT) {
-	 * head.setDir(Direction.RIGHT);
-	 * } else if (foodX < headX && head.getDir() != Direction.RIGHT) {
-	 * head.setDir(Direction.LEFT);
-	 * } else if (foodY < headY && currdir != Direction.DOWN) {
-	 * head.setDir(Direction.UP);
-	 * } else if (foodY > headY && currdir != Direction.UP) {
-	 * head.setDir(Direction.DOWN);
-	 * }
-	 * }
-	 * 
-	 * head.move(0);
-	 * Direction newdir = head.getDir();
-	 * // if collision then undo
-	 * 
-	 * while (super.detectCollision()) {
-	 * head.moveBackward();
-	 * // then move different direction
-	 * 
-	 * Direction[] dirArray = Direction.values();
-	 * int index = r.nextInt(4);
-	 * Direction d = dirArray[index];
-	 * // if d is not new dir (that resulted in collision) or opp of
-	 * // current dir
-	 * if (!d.equals(newdir) && !d.equals(dirsOpps.get(currdir))) {
-	 * System.out.println("newdir " + newdir + " currDir: " + currdir);
-	 * head.setDir(d);
-	 * System.out.println("changing dir to " + d.toString());
-	 * }
-	 * 
-	 * head.move();
-	 * }
-	 * 
-	 * }
-	 */
-
-	/*
-	 * public boolean isThisDirectionGood(int foodX, int foodY, int headX,
-	 * int headY) {
-	 * Direction currdir = head.getDir();
-	 * switch (currdir) {
-	 * case UP:
-	 * return (foodY < headY);
-	 * case DOWN:
-	 * return (foodY > headY);
-	 * case LEFT:
-	 * return (foodX < headX);
-	 * case RIGHT:
-	 * return (foodX > headX);
-	 * }
-	 * return (Boolean) null;
-	 * }
-	 */
 
 	public void setFood(BodyPiece food) {
 		this.food = food;
@@ -128,22 +62,22 @@ public class ComputerSnake extends SnakeBody {
 	}
 
 	public void findPath() {
-		System.out.println("FINDING PATH");
-		boolean finishedPath = false;
-		HashMap<XYCoordinate, Square> squaresMap = board.getSquaresMap();
-		HashMap<XYCoordinate, Square> openList = new HashMap<XYCoordinate, Square>();
-		HashMap<XYCoordinate, Square> closedList = new HashMap<XYCoordinate, Square>();
-		Square start = squaresMap.get(head.getXY()); // head square
-		Square target = squaresMap.get(food.getXY()); // food square
+
+		finishedPath = false;
+		openList.clear();
+		closedList.clear();
+		start = squaresMap.get(head.getXY()); // head square
+		target = squaresMap.get(food.getXY()); // food square
 		openList.put(start.getXy(), start);
 		Square currentSquare = start;
+		System.out.println("START: " + start);
+		System.out.println("TARGET: " + target);
 		while (!openList.isEmpty() && !finishedPath) {
 			// look for lowest F cost on open list
 			currentSquare = findLowestFOnOpenList(openList);
-			System.out.println("current square: "
-					+ currentSquare.getXy().toString());
 			if (currentSquare.equals(target)) {
-				System.out.println("DONE");
+				System.out
+						.println("DONE-----------------------------------------");
 				// DONE
 				finishedPath = true;
 			} else {
@@ -156,8 +90,9 @@ public class ComputerSnake extends SnakeBody {
 						squaresMap);
 				for (Square adj : adjSquares) {
 					// if it's walkable
-					if (adj.getContent().equals(SquareContents.EMPTY)
-							|| adj.getContent().equals(SquareContents.FOOD)) {
+					SquareContents content = adj.getContent();
+					if (!content.equals(SquareContents.SNAKEPIECE)
+							&& !content.equals(SquareContents.OBSTACLE)) {
 						// If it isn’t on the open list, add it to the open
 						// list.
 						// Make the current square the parent of this square.
@@ -165,13 +100,10 @@ public class ComputerSnake extends SnakeBody {
 						// the F, G, and H costs of the square.
 						if (!openList.containsKey(adj.getXy())
 								&& !closedList.containsKey(adj.getXy())) {
-							System.out
-									.println("key not in Open List, adding it");
-							openList.put(adj.getXy(), adj);
 							adj.setParent(currentSquare);
 							calculateFGH(adj, target, currentSquare);
+							openList.put(adj.getXy(), adj);
 						} else {
-							System.out.println("key is already in Open List");
 							// If it is on the open list already, check to see
 							// if
 							// this path to that square is better, using G cost
@@ -187,26 +119,30 @@ public class ComputerSnake extends SnakeBody {
 								adj.setG(currentSquare.getG() + 1);
 								adj.setF(adj.getG() + adj.getH());
 							}
+
 						}
 					}
 				}
-				System.out.println("Finished for ");
-				System.out.println(openList.size());
 			}
 		}
-		System.out.println("Finished while ");
-		// either found path, or there is no good path
+		// either found path, or no walkable path exists
 		currentSquare = target;
-		if (currentSquare == null) {
-			System.out.println("ERROR: current square is null");
+
+		// int counter = 0;
+		try {
+			while (!currentSquare.equals(start) && !(currentSquare == null)) {
+				// currentSquare.setMyPathColor(Color.GREEN);
+				path.push(currentSquare);
+				// currentSquare.setOnPath(true);
+				// counter++;
+				currentSquare = currentSquare.getParent();
+
+			}
+		} catch (Exception e) {
+			System.out.println("CAUGHT EXCEPTION");
+			System.out.println("currentSquare " + currentSquare);
 		}
-		if (start == null) {
-			System.out.println("ERROR: start is null");
-		}
-		while (!currentSquare.equals(start)) {
-			path.push(currentSquare);
-			currentSquare = currentSquare.getParent();
-		}
+		// System.out.println(counter);
 
 	}
 
@@ -223,9 +159,10 @@ public class ComputerSnake extends SnakeBody {
 		} else if (headXY.getY() > targetXY.getY()) {
 			head.setDir(Direction.UP);
 		}
-		System.out.println("Head XY is  " + headXY + " and target XY is "
-				+ targetXY + "  Chose direction: " + head.getDir());
-		head.move();
+		super.move();
+		if (!head.getXY().equals(targetXY)) {
+			System.out.println("ERROR -- why didn't I reach target XY?");
+		}
 	}
 
 	private void calculateFGH(Square square, Square target, Square currentSquare) {
@@ -250,18 +187,15 @@ public class ComputerSnake extends SnakeBody {
 	}
 
 	private Square findLowestFOnOpenList(HashMap<XYCoordinate, Square> openList) {
-		System.out.println("choosing lowest F in Open List");
 		int lowestF = 0;
 		Square lowestFSquare = null;
 		int counter = 0;
 		for (XYCoordinate key : openList.keySet()) {
-			System.out.println(key.toString() + "   ");
 			if (counter == 0) {
 				lowestFSquare = openList.get(key);
 				lowestF = lowestFSquare.getF();
-
-			} else {
 				counter++;
+			} else {
 				Square s = openList.get(key);
 				int f = s.getF();
 				if (f < lowestF) {
@@ -271,7 +205,6 @@ public class ComputerSnake extends SnakeBody {
 			}
 
 		}
-		System.out.println("end choose   " + lowestFSquare.getXy().toString());
 		return lowestFSquare;
 	}
 
@@ -289,18 +222,21 @@ public class ComputerSnake extends SnakeBody {
 		for (XYCoordinate lookFor : lookFors) {
 			Square get = squaresMap.get(lookFor);
 			if (get != null) {
-				adjSquares.add(get);
+				SquareContents content = get.getContent();
+				if (content.equals(SquareContents.EMPTY)
+						|| content.equals(SquareContents.FOOD)) {
+					adjSquares.add(get);
+				}
 			}
 		}
-		// lookForXY.setX(x + size);
-		// adjSquares.add(squaresMap.get(lookForXY));
-		// lookForXY.setX(x - size);
-		// adjSquares.add(squaresMap.get(lookForXY));
-		// lookForXY.setX(x);
-		// lookForXY.setY(y + size);
-		// adjSquares.add(squaresMap.get(lookForXY));
-		// lookForXY.setY(y - size);
-		// adjSquares.add(squaresMap.get(lookForXY));
 		return adjSquares;
+	}
+
+	private void clearSquareSettings(Square s) {
+		s.setParent(null);
+		s.setF(0);
+		s.setG(0);
+		s.setH(0);
+		// s.setMyPathColor(Color.BLACK);
 	}
 }
