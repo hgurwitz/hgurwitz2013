@@ -1,19 +1,17 @@
 package snake.computer_player;
 
 import java.awt.Color;
-import java.io.BufferedOutputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 import java.util.Stack;
 
 import snake.Direction;
 
 public class ComputerSnake extends SnakeBody {
-
+	/*
+	 * Used this tutorial to implement A-star pathfinding:
+	 * http://www.policyalmanac.org/games/aStarTutorial.htm
+	 */
 	private BodyPiece food;
 	private Stack<Square> path;
 	private boolean finishedPath = false;
@@ -25,7 +23,7 @@ public class ComputerSnake extends SnakeBody {
 
 	public ComputerSnake(BodyPiece head, int initialLength,
 			ArrayList<Piece> obstacles, BodyPiece food, Board board) {
-		super(head, initialLength, obstacles, board);
+		super(head, initialLength, board);
 		head.setColor(Color.RED);
 		this.food = food;
 		path = new Stack<Square>();

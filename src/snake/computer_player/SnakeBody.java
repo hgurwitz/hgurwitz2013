@@ -1,7 +1,6 @@
 package snake.computer_player;
 
 import java.awt.Graphics;
-import java.util.ArrayList;
 
 import snake.Direction;
 
@@ -10,13 +9,10 @@ public class SnakeBody {
 	protected BodyPiece head;
 	private BodyPiece tail;
 	private int initialLength;
-	private ArrayList<Piece> obstacles;
 	private XYCoordinate oldTail;
 	protected Board board;
 
-	public SnakeBody(BodyPiece head, int initialLength,
-			ArrayList<Piece> obstacles, Board board) {
-		this.obstacles = obstacles;
+	public SnakeBody(BodyPiece head, int initialLength, Board board) {
 		this.board = board;
 		this.head = head;
 		this.tail = head;
@@ -117,7 +113,4 @@ public class SnakeBody {
 		this.tail = tail;
 	}
 
-	public void setObstacles(ArrayList<Piece> obstacles) {
-		this.obstacles = obstacles;
-	}
 }

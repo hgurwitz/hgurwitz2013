@@ -9,7 +9,6 @@ public class GameController {
 
 	private MoveTimer timer;
 	private int initialSnakeLength;
-	private int decreaseTimeIncrementBy;
 	private FoodGenerator generator;
 	private BodyPiece food;
 	private ArrayList<Piece> obstacles;
@@ -25,10 +24,9 @@ public class GameController {
 		initializeObstacles(8);
 		computerSnake = new ComputerSnake(new BodyPiece(Color.ORANGE, loc, loc,
 				Direction.LEFT), initialSnakeLength, obstacles, board);
-		generator = new FoodGenerator(computerSnake, obstacles, board);
+		generator = new FoodGenerator(board);
 		food = generator.getNewPieceOfFood();
 		computerSnake.setFood(food);
-		decreaseTimeIncrementBy = 8;
 		timer = new MoveTimer(100, 50);
 		board.setFood(food);
 		board.setSnake(computerSnake);

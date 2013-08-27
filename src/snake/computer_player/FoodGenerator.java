@@ -1,20 +1,18 @@
 package snake.computer_player;
 
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.Random;
 
 public class FoodGenerator {
 
-	private ArrayList<Piece> obstacles;
-	private ComputerSnake computerSnake;
+	// /private ArrayList<Piece> obstacles;
+	// private ComputerSnake computerSnake;
 	private Random random;
 	private Board board;
 
-	public FoodGenerator(ComputerSnake computerSnake,
-			ArrayList<Piece> obstacles, Board board) {
-		this.computerSnake = computerSnake;
-		this.obstacles = obstacles;
+	public FoodGenerator(Board board) {
+		// this.computerSnake = computerSnake;
+		// this.obstacles = obstacles;
 		this.random = new Random();
 		this.board = board;
 	}
@@ -34,12 +32,14 @@ public class FoodGenerator {
 		return p;
 	}
 
-	private boolean checkForCollisionWithObstacles(int x, int y) {
-		for (Piece p : obstacles) {
-			if (p.detectCollisionWithAnotherPiece(x, y)) {
-				return true;
-			}
-		}
-		return false;
-	}
+	/*
+	 * private boolean checkForCollisionWithObstacles(int x, int y) {
+	 * for (Piece p : obstacles) {
+	 * if (p.detectCollisionWithAnotherPiece(x, y)) {
+	 * return true;
+	 * }
+	 * }
+	 * return false;
+	 * }
+	 */
 }
