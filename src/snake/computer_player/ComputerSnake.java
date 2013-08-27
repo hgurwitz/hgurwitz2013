@@ -91,27 +91,25 @@ public class ComputerSnake extends SnakeBody {
 					SquareContents content = adj.getContent();
 					if (!content.equals(SquareContents.SNAKEPIECE)
 							&& !content.equals(SquareContents.OBSTACLE)) {
-						// If it isn’t on the open list, add it to the open
-						// list.
-						// Make the current square the parent of this square.
-						// Record
-						// the F, G, and H costs of the square.
+						/*
+						 * If it isn’t on the open list, add it to the open
+						 * list. Make the current square the parent of this
+						 * square. Record the F, G, and H costs of the square.
+						 */
 						if (!openList.containsKey(adj.getXy())
 								&& !closedList.containsKey(adj.getXy())) {
 							adj.setParent(currentSquare);
 							calculateFGH(adj, target, currentSquare);
 							openList.put(adj.getXy(), adj);
 						} else {
-							// If it is on the open list already, check to see
-							// if
-							// this path to that square is better, using G cost
-							// as
-							// the measure. A lower G cost means that this is a
-							// better path. If so, change the parent of the
-							// square
-							// to the current square, and recalculate the G and
-							// F
-							// scores of the square.
+							/*
+							 * If it is on the open list already, check to see
+							 * if this path to that square is better, using G
+							 * cost as the measure. A lower G cost means that
+							 * this is a better path. If so, change the parent
+							 * of the square to the current square, and
+							 * recalculate the G and F scores of the square.
+							 */
 							if (adj.getG() > (currentSquare.getG() + 1)) {
 								adj.setParent(currentSquare);
 								adj.setG(currentSquare.getG() + 1);
@@ -164,10 +162,12 @@ public class ComputerSnake extends SnakeBody {
 	}
 
 	private void calculateFGH(Square square, Square target, Square currentSquare) {
-		// G= number of squares already traveled to get to this square, plus 1
-		// H = the number of squares that have to be traveled to get to target
-		// from this square
-		// F=G+H
+		/*
+		 * G= number of squares already traveled to get to this square, plus 1
+		 * H = the number of squares that have to be traveled to get to target
+		 * from this square
+		 * F=G+H
+		 */
 		square.setG(currentSquare.getG() + 1);
 		XYCoordinate squareXY = square.getXy();
 		XYCoordinate targetXY = target.getXy();
@@ -185,6 +185,11 @@ public class ComputerSnake extends SnakeBody {
 	}
 
 	private Square findLowestFOnOpenList(HashMap<XYCoordinate, Square> openList) {
+		/*
+		 * If 2 Squares have equal Fs, the method should return the one that
+		 * will not cause the snake to turn (so the path is smoother)
+		 */
+
 		int lowestF = 0;
 		Square lowestFSquare = null;
 		int counter = 0;
