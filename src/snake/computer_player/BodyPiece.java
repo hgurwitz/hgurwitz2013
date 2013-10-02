@@ -44,20 +44,12 @@ public class BodyPiece extends Piece {
 		this(new Piece(p.getColor(), p.getXY()), p.getDir());
 	}
 
-	public BodyPiece getNext() {
-		return nextNode;
-	}
-
 	public Direction getPrevDir() {
 		return prevDirs.peek();
 	}
 
 	public void setNext(BodyPiece nextNode) {
 		this.nextNode = nextNode;
-	}
-
-	public BodyPiece getPrev() {
-		return prevNode;
 	}
 
 	public void setPrev(BodyPiece prevNode) {
@@ -199,14 +191,9 @@ public class BodyPiece extends Piece {
 		// O(1)
 		// only called when this piece is the head
 		/*
-		 * BodyPiece next = nextNode; // don't check head
-		 * while (next != null) {
-		 * if (detectCollisionWithAnotherPiece(next, pieceX, pieceY)) {
-		 * return true;
-		 * }
-		 * next = next.getNext();
-		 * }
-		 * return false;
+		 * BodyPiece next = nextNode; // don't check head while (next != null) {
+		 * if (detectCollisionWithAnotherPiece(next, pieceX, pieceY)) { return
+		 * true; } next = next.getNext(); } return false;
 		 */
 
 		if (board.getContentsOfASquare(xy).equals(SquareContents.SNAKEPIECE)) {
