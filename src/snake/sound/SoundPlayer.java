@@ -1,4 +1,4 @@
-package snake;
+package snake.sound;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,15 +1,15 @@
-package snake;
+package snake.sound;
 
 import java.io.IOException;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-public class GameOverSoundPlayer extends SoundPlayer {
+public class FoundFoodSoundPlayer extends SoundPlayer {
 
 	public static void main(String[] args) {
 		try {
-			GameOverSoundPlayer test = new GameOverSoundPlayer();
+			FoundFoodSoundPlayer test = new FoundFoodSoundPlayer();
 			test.play();
 			Thread.sleep(10000);
 
@@ -25,9 +25,10 @@ public class GameOverSoundPlayer extends SoundPlayer {
 		}
 	}
 
-	public GameOverSoundPlayer() throws UnsupportedAudioFileException,
+	public FoundFoodSoundPlayer() throws UnsupportedAudioFileException,
 			IOException, LineUnavailableException {
-		super("./GameOver.wav");
+		super("./FoundFood.wav");
 
 	}
+
 }

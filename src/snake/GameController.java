@@ -72,6 +72,7 @@ public class GameController {
 		 * (IOException e) { e.printStackTrace(); } catch
 		 * (LineUnavailableException e) { e.printStackTrace(); }
 		 */
+
 	}
 
 	public void checkGameStuff() {
@@ -94,6 +95,7 @@ public class GameController {
 		 * (IOException e) { e.printStackTrace(); } catch
 		 * (LineUnavailableException e) { e.printStackTrace(); }
 		 */
+
 	}
 
 }
