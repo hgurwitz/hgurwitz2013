@@ -1,4 +1,4 @@
-package snake.multiplayer;
+package snake.old;
 
 import java.awt.Color;
 import java.util.Random;
@@ -18,10 +18,10 @@ public class FoodGenerator {
 	public BodyPiece getNewPieceOfFood() {
 		int x, y;
 		do {
-			x = (random.nextInt(SnakeView.SIDELENGTH));
+			x = (random.nextInt(ComputerPlayerSnakeView.SIDELENGTH));
 			x -= (x % BodyPiece.SIZE); // -truncates so it's aligned with the
 										// snake
-			y = (random.nextInt(SnakeView.SIDELENGTH));
+			y = (random.nextInt(ComputerPlayerSnakeView.SIDELENGTH));
 			y -= (y % BodyPiece.SIZE);
 		} while (snake.detectCollisionsWithAPiece(x, y)
 				|| computerSnake.detectCollisionsWithAPiece(x, y));

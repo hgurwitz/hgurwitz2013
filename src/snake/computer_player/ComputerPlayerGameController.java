@@ -1,11 +1,13 @@
 package snake.computer_player;
 
-import java.awt.Color;
+import java.awt.Graphics;
 import java.util.ArrayList;
 
+import snake.Board;
 import snake.Direction;
+import snake.Piece;
 
-public class GameController {
+public class ComputerPlayerGameController {
 
 	private MoveTimer timer;
 	private int initialSnakeLength;
@@ -16,16 +18,16 @@ public class GameController {
 	private boolean gameOver = false;
 	private Board board;
 
-	public GameController() {
+	public ComputerPlayerGameController() {
 		board = new Board();
 		initialSnakeLength = 7;
-		int loc = SnakeView.SIDELENGTH / 3;
+		int loc = ComputerPlayerSnakeView.SIDELENGTH / 3;
 		loc -= loc % Piece.SIZE;
 		initializeObstacles(8);
-		computerSnake = new ComputerSnake(new BodyPiece(Color.ORANGE, loc, loc,
+		computerSnake = new ComputerSnake(new BodyPiece(loc, loc,
 				Direction.LEFT), initialSnakeLength, obstacles, board);
-		generator = new FoodGenerator(board);
-		food = generator.getNewPieceOfFood();
+		generator = new FoodGenerator();
+		food = generator.getNewPieceOfFood(board);
 		computerSnake.setFood(food);
 		timer = new MoveTimer(100, 50);
 		board.setFood(food);
@@ -35,9 +37,9 @@ public class GameController {
 
 	private void initializeObstacles(int howMany) {
 		obstacles = new ArrayList<Piece>();
-		int y = SnakeView.SIDELENGTH / 2;
+		int y = ComputerPlayerSnakeView.SIDELENGTH / 2;
 		y += y % Piece.SIZE;
-		int x = ((SnakeView.PIECELENGTH - (howMany + 2)) / 2) * Piece.SIZE;
+		int x = ((ComputerPlayerSnakeView.PIECELENGTH - (howMany + 2)) / 2) * Piece.SIZE;
 		x -= x % Piece.SIZE;
 		for (int i = 1; i <= howMany; i++) {
 			Piece p = new Piece(x, y);
@@ -72,11 +74,11 @@ public class GameController {
 					foundFood();
 				}
 
-				if (computerSnake.detectCollision()) {
+				if (computerSnake.detectCollision(board)) {
 					System.out.println("Detected snake collision");
 					detectedCollision();
 				}
-				board.setSnake(computerSnake.getHead());
+				board.setComputerSnake(computerSnake.getHead());
 				board.setEmpty(computerSnake.getOldTail());
 			}
 
@@ -89,38 +91,26 @@ public class GameController {
 		timer.setPaused(true);
 		System.out.println("Detected snake collision");
 		/*
-		 * try {
-		 * new GameOverSoundPlayer().play();
-		 * } catch (UnsupportedAudioFileException e) {
-		 * e.printStackTrace();
-		 * } catch (IOException e) {
-		 * e.printStackTrace();
-		 * } catch (LineUnavailableException e) {
-		 * e.printStackTrace();
-		 * }
+		 * try { new GameOverSoundPlayer().play(); } catch
+		 * (UnsupportedAudioFileException e) { e.printStackTrace(); } catch
+		 * (IOException e) { e.printStackTrace(); } catch
+		 * (LineUnavailableException e) { e.printStackTrace(); }
 		 */
 	}
 
 	private void foundFood() {
 		/*
-		 * try {
-		 * new FoundFoodSoundPlayer().play();
-		 * } catch (UnsupportedAudioFileException e) {
-		 * e.printStackTrace();
-		 * } catch (IOException e) {
-		 * e.printStackTrace();
-		 * } catch (LineUnavailableException e) {
-		 * e.printStackTrace();
-		 * }
+		 * try { new FoundFoodSoundPlayer().play(); } catch
+		 * (UnsupportedAudioFileException e) { e.printStackTrace(); } catch
+		 * (IOException e) { e.printStackTrace(); } catch
+		 * (LineUnavailableException e) { e.printStackTrace(); }
 		 */
 		board.setEmpty(food);
-		food = generator.getNewPieceOfFood();
+		food = generator.getNewPieceOfFood(board);
 		board.setFood(food);
 		computerSnake.setFood(food);
 		computerSnake.addPiece();
-		board.setSnake(computerSnake.getTail());
-		// timer.setTimeIncrement(timer.getTimeIncrement()
-		// - decreaseTimeIncrementBy);
+		board.setComputerSnake(computerSnake.getTail());
 	}
 
 	public void pauseAndUnPause() {
@@ -130,6 +120,10 @@ public class GameController {
 
 	public ComputerSnake getComputerSnake() {
 		return computerSnake;
+	}
+
+	protected void paint(Graphics g) {
+		board.paint(g);
 	}
 
 }

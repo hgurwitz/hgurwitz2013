@@ -1,8 +1,8 @@
 package snake.computer_player;
 
-import java.awt.Graphics;
-
+import snake.Board;
 import snake.Direction;
+import snake.XYCoordinate;
 
 public class SnakeBody {
 
@@ -10,10 +10,8 @@ public class SnakeBody {
 	private BodyPiece tail;
 	private int initialLength;
 	private XYCoordinate oldTail;
-	protected Board board;
 
-	public SnakeBody(BodyPiece head, int initialLength, Board board) {
-		this.board = board;
+	public SnakeBody(BodyPiece head, int initialLength) {
 		this.head = head;
 		this.tail = head;
 		this.initialLength = initialLength;
@@ -21,12 +19,10 @@ public class SnakeBody {
 		for (int i = 0; i < (initialLength - 1); i++) {
 			addPiece();
 		}
-
 	}
 
 	public void addPiece() {
 		BodyPiece newPiece = new BodyPiece(0, 0, tail.getPrevDir());
-		newPiece.setColor(tail.getColor());
 		newPiece.setDir(tail.getDir());
 
 		int tailX = tail.getXY().getX();
@@ -63,9 +59,9 @@ public class SnakeBody {
 		this.initialLength = initialLength;
 	}
 
-	public void paint(Graphics g) {
-		head.paint(g);
-	}
+	/*
+	 * public void paint(Graphics g) { head.paint(g); }
+	 */
 
 	public void move() {
 		oldTail = new XYCoordinate(tail.getXY());
@@ -80,18 +76,11 @@ public class SnakeBody {
 		head.setDir(newDir);
 	}
 
-	public boolean detectCollision() {
-		// return head.detectCollision(board)
-		// || head.detectCollisionWithObstacles(board);
+	public boolean detectCollision(Board board) {
 		return head.detectCollisionWithWalls()
 				|| head.detectCollisionWithBody(board)
 				|| head.detectCollisionWithObstacles(board);
 	}
-
-	// public boolean detectCollisionsWithSelf() {
-	// return head.detectCollisionWithBody(head.getXY());
-	// return head.detectCollisionWithBody(board);
-	// }
 
 	public boolean detectCollisionsWithFood(XYCoordinate xy) {
 		return head.getXY().equals(xy);

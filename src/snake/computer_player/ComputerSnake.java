@@ -1,11 +1,15 @@
 package snake.computer_player;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
+import snake.Board;
 import snake.Direction;
+import snake.Piece;
+import snake.Square;
+import snake.SquareContents;
+import snake.XYCoordinate;
 
 public class ComputerSnake extends SnakeBody {
 	/*
@@ -23,8 +27,7 @@ public class ComputerSnake extends SnakeBody {
 
 	public ComputerSnake(BodyPiece head, int initialLength,
 			ArrayList<Piece> obstacles, BodyPiece food, Board board) {
-		super(head, initialLength, board);
-		head.setColor(Color.RED);
+		super(head, initialLength);
 		this.food = food;
 		path = new Stack<Square>();
 		finishedPath = false;
@@ -89,8 +92,8 @@ public class ComputerSnake extends SnakeBody {
 				for (Square adj : adjSquares) {
 					// if it's walkable
 					SquareContents content = adj.getContent();
-					if (!content.equals(SquareContents.SNAKEPIECE)
-							&& !content.equals(SquareContents.OBSTACLE)) {
+					if (content.equals(SquareContents.EMPTY)
+							|| content.equals(SquareContents.FOOD)) {
 						/*
 						 * If it isn’t on the open list, add it to the open
 						 * list. Make the current square the parent of this
@@ -124,7 +127,6 @@ public class ComputerSnake extends SnakeBody {
 		// either found path, or no walkable path exists
 		currentSquare = target;
 
-		// int counter = 0;
 		try {
 			while (!currentSquare.equals(start) && !(currentSquare == null)) {
 				// currentSquare.setMyPathColor(Color.GREEN);
@@ -138,13 +140,12 @@ public class ComputerSnake extends SnakeBody {
 			System.out.println("CAUGHT EXCEPTION");
 			System.out.println("currentSquare " + currentSquare);
 		}
-		// System.out.println(counter);
 
 	}
 
 	private void moveToGetToXY(XYCoordinate targetXY) {
+		// targetXY is adjacent to head
 		// choose a direction
-		// (targetXY is adjacent to head)
 		XYCoordinate headXY = head.getXY();
 		if (headXY.getX() < targetXY.getX()) {
 			head.setDir(Direction.RIGHT);
@@ -163,10 +164,9 @@ public class ComputerSnake extends SnakeBody {
 
 	private void calculateFGH(Square square, Square target, Square currentSquare) {
 		/*
-		 * G= number of squares already traveled to get to this square, plus 1
-		 * H = the number of squares that have to be traveled to get to target
-		 * from this square
-		 * F=G+H
+		 * G= number of squares already traveled to get to this square, plus 1 H
+		 * = the number of squares that have to be traveled to get to target
+		 * from this square F = G + H
 		 */
 		square.setG(currentSquare.getG() + 1);
 		XYCoordinate squareXY = square.getXy();

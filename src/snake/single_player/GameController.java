@@ -4,7 +4,6 @@ public class GameController {
 
 	private MoveTimer timer;
 	private int initialSnakeLength;
-	private int decreaseTimeIncrementBy;
 	private FoodGenerator generator;
 	private BodyPiece food;
 	private SnakeBody snake;
@@ -21,7 +20,6 @@ public class GameController {
 		loc -= loc % BodyPiece.SIZE;
 		generator = new FoodGenerator(snake);
 		food = generator.getNewPieceOfFood();
-		decreaseTimeIncrementBy = 8;
 		timer = new MoveTimer(100, 50);
 	}
 
@@ -60,29 +58,19 @@ public class GameController {
 		gameOver = true;
 		timer.setPaused(true);
 		/*
-		 * try {
-		 * new GameOverSoundPlayer().play();
-		 * } catch (UnsupportedAudioFileException e) {
-		 * e.printStackTrace();
-		 * } catch (IOException e) {
-		 * e.printStackTrace();
-		 * } catch (LineUnavailableException e) {
-		 * e.printStackTrace();
-		 * }
+		 * try { new GameOverSoundPlayer().play(); } catch
+		 * (UnsupportedAudioFileException e) { e.printStackTrace(); } catch
+		 * (IOException e) { e.printStackTrace(); } catch
+		 * (LineUnavailableException e) { e.printStackTrace(); }
 		 */
 	}
 
 	private void foundFood(SnakeBody snake) {
 		/*
-		 * try {
-		 * new FoundFoodSoundPlayer().play();
-		 * } catch (UnsupportedAudioFileException e) {
-		 * e.printStackTrace();
-		 * } catch (IOException e) {
-		 * e.printStackTrace();
-		 * } catch (LineUnavailableException e) {
-		 * e.printStackTrace();
-		 * }
+		 * try { new FoundFoodSoundPlayer().play(); } catch
+		 * (UnsupportedAudioFileException e) { e.printStackTrace(); } catch
+		 * (IOException e) { e.printStackTrace(); } catch
+		 * (LineUnavailableException e) { e.printStackTrace(); }
 		 */
 
 		food = generator.getNewPieceOfFood();

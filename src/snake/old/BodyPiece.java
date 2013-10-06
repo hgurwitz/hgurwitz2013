@@ -1,4 +1,4 @@
-package snake.multiplayer;
+package snake.old;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -232,8 +232,8 @@ public class BodyPiece {
 	}
 
 	public boolean detectCollisionWithWalls() {
-		if (x < 0 || ((x + SIZE) > (SnakeView.SIDELENGTH)) || y < 0
-				|| ((y + SIZE) > (SnakeView.SIDELENGTH))) {
+		if (x < 0 || ((x + SIZE) > (ComputerPlayerSnakeView.SIDELENGTH)) || y < 0
+				|| ((y + SIZE) > (ComputerPlayerSnakeView.SIDELENGTH))) {
 			return true;
 		}
 		return false;

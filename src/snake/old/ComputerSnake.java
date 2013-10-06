@@ -1,4 +1,4 @@
-package snake.multiplayer;
+package snake.old;
 
 import java.awt.Color;
 import java.util.HashMap;
@@ -8,7 +8,6 @@ import snake.Direction;
 
 public class ComputerSnake extends SnakeBody {
 
-	private SnakeBody snake;
 	private BodyPiece food;
 	private HashMap<Direction, Direction> dirsOpps;
 	private Random r;

@@ -1,12 +1,12 @@
 package snake.computer_player;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.util.EmptyStackException;
 import java.util.Stack;
 
+import snake.Board;
 import snake.Direction;
+import snake.Piece;
+import snake.SquareContents;
 
 public class BodyPiece extends Piece {
 
@@ -14,12 +14,8 @@ public class BodyPiece extends Piece {
 	private Stack<Direction> prevDirs;
 	private BodyPiece nextNode, prevNode;
 
-	public BodyPiece(Color color, int x, int y) {
-		this(new Piece(color, x, y));
-	}
-
-	public BodyPiece(Color color, int x, int y, Direction dir) {
-		this(new Piece(color, x, y), dir);
+	public BodyPiece(int x, int y) {
+		this(new Piece(x, y));
 	}
 
 	public BodyPiece(Piece p) {
@@ -34,14 +30,14 @@ public class BodyPiece extends Piece {
 	}
 
 	public BodyPiece(int x, int y, Direction dir) {
-		super(Color.CYAN, x, y);
+		super(x, y);
 		this.dir = dir;
 		prevDirs = new Stack<Direction>();
 		prevDirs.push(dir);
 	}
 
 	public BodyPiece(BodyPiece p) {
-		this(new Piece(p.getColor(), p.getXY()), p.getDir());
+		this(new Piece(p.getXY()), p.getDir());
 	}
 
 	public Direction getPrevDir() {
@@ -77,23 +73,19 @@ public class BodyPiece extends Piece {
 		this.dir = newDir;
 	}
 
-	public void paint(Graphics g) {
-		g2 = (Graphics2D) g;
-		g2.setComposite(ALPHA);
-		g.setColor(color);
-		g.fillRoundRect(xy.getX(), xy.getY(), SIZE, SIZE, 10, 10);
-		if (nextNode != null) {
-			nextNode.paint(g);
-		}
-
-	}
+	/*
+	 * public void paint(Graphics g) { g2 = (Graphics2D) g;
+	 * g2.setComposite(ALPHA); g.fillRoundRect(xy.getX(), xy.getY(), SIZE, SIZE,
+	 * 10, 10); if (nextNode != null) { nextNode.paint(g); }
+	 * 
+	 * }
+	 */
 
 	public void move() {
 		move(0);
 	}
 
 	public void move(int numPiece) {
-		// System.out.println("MOVE called" + numPiece);
 		switch (dir) {
 		case UP:
 			setY(xy.getY() - SIZE);
@@ -172,57 +164,27 @@ public class BodyPiece extends Piece {
 		return dir;
 	}
 
-	// public boolean detectCollision() {
-
-	// return detectCollisionWithWalls() || detectCollisionWithBody(xy);
-	// }
-
-	// public boolean detectCollision(Board board) {
-
-	// return detectCollisionWithWalls() || detectCollisionWithBody(board);
-	// }
-
-	// public boolean detectCollisionWithBody(XYCoordinate xyTest) {
-	// return detectCollisionWithBody(xyTest.getX(), xyTest.getY());
-	// }
-
 	public boolean detectCollisionWithBody(Board board) {
-		// (int pieceX, int pieceY) {
-		// O(1)
-		// only called when this piece is the head
-		/*
-		 * BodyPiece next = nextNode; // don't check head while (next != null) {
-		 * if (detectCollisionWithAnotherPiece(next, pieceX, pieceY)) { return
-		 * true; } next = next.getNext(); } return false;
-		 */
 
-		if (board.getContentsOfASquare(xy).equals(SquareContents.SNAKEPIECE)) {
-			System.out.println("Detected collision with my body");
+		SquareContents content = board.getContentsOfASquare(xy);
+		if (content.equals(SquareContents.COMP_SNAKEPIECE)
+				|| content.equals(SquareContents.PLAYER_SNAKEPIECE)) {
+			System.out.println("Detected collision with body");
 		}
-		return (board.getContentsOfASquare(xy)
-				.equals(SquareContents.SNAKEPIECE));
+		return (content.equals(SquareContents.COMP_SNAKEPIECE) || content
+				.equals(SquareContents.PLAYER_SNAKEPIECE));
 	}
 
 	public boolean detectCollisionWithWalls() {
-		// O(1)
-		// only called when this piece is the head
 		int x = xy.getX(), y = xy.getY();
-		if (x < 0 || ((x + SIZE) > (SnakeView.SIDELENGTH)) || y < 0
-				|| ((y + SIZE) > (SnakeView.SIDELENGTH))) {
+		if (x < 0 || ((x + SIZE) > (ComputerPlayerSnakeView.SIDELENGTH)) || y < 0
+				|| ((y + SIZE) > (ComputerPlayerSnakeView.SIDELENGTH))) {
 			return true;
 		}
 		return false;
 	}
 
-	public boolean detectCollisionWithObstacles(Board board) { // O(1)
-		// only called when this piece is the head
-		// (ArrayList<Piece> obstacles) {
-		// for (Piece p : obstacles) {
-		// if (detectCollisionWithAnotherPiece(this, p.getXY())) {
-		// return true;
-		// }
-		// }
-		// return false;
+	public boolean detectCollisionWithObstacles(Board board) {
 		return (board.getContentsOfASquare(xy).equals(SquareContents.OBSTACLE));
 	}
 

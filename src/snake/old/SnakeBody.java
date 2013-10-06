@@ -1,4 +1,4 @@
-package snake.multiplayer;
+package snake.old;
 
 import java.awt.Graphics;
 

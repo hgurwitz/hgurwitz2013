@@ -1,7 +1,14 @@
-package snake.computer_player;
+package snake;
 
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
+
+import snake.computer_player.BodyPiece;
+import snake.computer_player.ComputerSnake;
+import snake.computer_player.SnakeBody;
+import snake.computer_player.ComputerPlayerSnakeView;
 
 public class Board {
 
@@ -11,9 +18,8 @@ public class Board {
 		squaresMap = new HashMap<XYCoordinate, Square>();
 		// add EMPTY squares
 		int x = 0, y = 0;
-
-		while (x < SnakeView.SIDELENGTH) {
-			while (y < SnakeView.SIDELENGTH) {
+		while (x < ComputerPlayerSnakeView.SIDELENGTH) {
+			while (y < ComputerPlayerSnakeView.SIDELENGTH) {
 				XYCoordinate xy = new XYCoordinate(x, y);
 				System.out.print(xy);
 				Square s = new Square(xy, SquareContents.EMPTY);
@@ -24,7 +30,6 @@ public class Board {
 			y = 0;
 			x += Piece.SIZE;
 		}
-
 	}
 
 	public HashMap<XYCoordinate, Square> getSquaresMap() {
@@ -38,15 +43,31 @@ public class Board {
 	public void setSnake(ComputerSnake snake) {
 		BodyPiece p = snake.getHead();
 		while (p != null) {
-			squaresMap.get(p.getXY()).setContent(SquareContents.SNAKEPIECE);
+			squaresMap.get(p.getXY())
+					.setContent(SquareContents.COMP_SNAKEPIECE);
 			p = p.getNextNode();
 		}
 	}
 
-	public void setSnake(BodyPiece piece) {
+	public void setSnake(SnakeBody snake) {
+		BodyPiece p = snake.getHead();
+		while (p != null) {
+			squaresMap.get(p.getXY()).setContent(
+					SquareContents.PLAYER_SNAKEPIECE);
+			p = p.getNextNode();
+		}
+	}
+
+	public void setComputerSnake(BodyPiece piece) {
 		XYCoordinate xy = piece.getXY();
 		Square s = squaresMap.get(xy);
-		s.setContent(SquareContents.SNAKEPIECE);
+		s.setContent(SquareContents.COMP_SNAKEPIECE);
+	}
+
+	public void setPlayerSnake(BodyPiece piece) {
+		XYCoordinate xy = piece.getXY();
+		Square s = squaresMap.get(xy);
+		s.setContent(SquareContents.PLAYER_SNAKEPIECE);
 	}
 
 	public void setObstacles(ArrayList<Piece> obstacles) {
@@ -71,4 +92,11 @@ public class Board {
 		return squaresMap.get(xy).getContent();
 	}
 
+	public void paint(Graphics g) {
+		Set<XYCoordinate> keyset = squaresMap.keySet();
+		for (XYCoordinate keyXY : keyset) {
+			Square s = squaresMap.get(keyXY);
+			s.paint(g);
+		}
+	}
 }
