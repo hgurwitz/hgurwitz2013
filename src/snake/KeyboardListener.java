@@ -1,16 +1,15 @@
-package snake.computer_player;
+package snake;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import snake.Direction;
 
 public class KeyboardListener implements KeyListener {
 
 	private SnakeBody snake;
-	private MultiPlayerGameController controller;
+	private GameController controller;
 
-	public KeyboardListener(SnakeBody snake, MultiPlayerGameController controller) {
+	public KeyboardListener(SnakeBody snake, GameController controller) {
 		super();
 		this.snake = snake;
 		this.controller = controller;

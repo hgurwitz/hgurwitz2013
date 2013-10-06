@@ -1,4 +1,4 @@
-package snake.computer_player;
+package snake;
 
 public class MoveTimer {
 

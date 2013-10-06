@@ -1,8 +1,5 @@
-package snake.computer_player;
+package snake;
 
-import snake.Board;
-import snake.Direction;
-import snake.XYCoordinate;
 
 public class SnakeBody {
 

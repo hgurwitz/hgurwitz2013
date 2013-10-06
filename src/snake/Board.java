@@ -5,10 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-import snake.computer_player.BodyPiece;
-import snake.computer_player.ComputerSnake;
-import snake.computer_player.SnakeBody;
-import snake.computer_player.ComputerPlayerSnakeView;
 
 public class Board {
 
@@ -18,8 +14,8 @@ public class Board {
 		squaresMap = new HashMap<XYCoordinate, Square>();
 		// add EMPTY squares
 		int x = 0, y = 0;
-		while (x < ComputerPlayerSnakeView.SIDELENGTH) {
-			while (y < ComputerPlayerSnakeView.SIDELENGTH) {
+		while (x < SnakeView.SIDELENGTH) {
+			while (y < SnakeView.SIDELENGTH) {
 				XYCoordinate xy = new XYCoordinate(x, y);
 				System.out.print(xy);
 				Square s = new Square(xy, SquareContents.EMPTY);
@@ -40,7 +36,7 @@ public class Board {
 		squaresMap.get(food.getXY()).setContent(SquareContents.FOOD);
 	}
 
-	public void setSnake(ComputerSnake snake) {
+	public void setComputerSnake(ComputerSnake snake) {
 		BodyPiece p = snake.getHead();
 		while (p != null) {
 			squaresMap.get(p.getXY())
@@ -49,7 +45,7 @@ public class Board {
 		}
 	}
 
-	public void setSnake(SnakeBody snake) {
+	public void setPlayerSnake(SnakeBody snake) {
 		BodyPiece p = snake.getHead();
 		while (p != null) {
 			squaresMap.get(p.getXY()).setContent(

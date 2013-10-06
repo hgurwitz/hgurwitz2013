@@ -1,19 +1,16 @@
-package snake.single_player;
+package snake;
 
-import java.awt.Color;
 import java.util.Random;
 
-public class FoodGenerator {
 
-	private SnakeBody snake;
+public class FoodGenerator {
 	private Random random;
 
-	public FoodGenerator(SnakeBody snake) {
-		this.snake = snake;
+	public FoodGenerator() {
 		this.random = new Random();
 	}
 
-	public BodyPiece getNewPieceOfFood() {
+	public BodyPiece getNewPieceOfFood(Board board) {
 		int x, y;
 		do {
 			x = (random.nextInt(SnakeView.SIDELENGTH));
@@ -21,8 +18,8 @@ public class FoodGenerator {
 										// snake
 			y = (random.nextInt(SnakeView.SIDELENGTH));
 			y -= (y % BodyPiece.SIZE);
-		} while (snake.detectCollisionsWithAPiece(x, y));
-		BodyPiece p = new BodyPiece(Color.MAGENTA, x, y);
+		} while (board.getContentsOfASquare(x, y) != SquareContents.EMPTY);
+		BodyPiece p = new BodyPiece(x, y);
 		return p;
 	}
 

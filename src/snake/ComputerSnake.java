@@ -1,15 +1,9 @@
-package snake.computer_player;
+package snake;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
-import snake.Board;
-import snake.Direction;
-import snake.Piece;
-import snake.Square;
-import snake.SquareContents;
-import snake.XYCoordinate;
 
 public class ComputerSnake extends SnakeBody {
 	/*

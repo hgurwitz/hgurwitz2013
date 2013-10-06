@@ -1,12 +1,8 @@
-package snake.computer_player;
+package snake;
 
 import java.util.EmptyStackException;
 import java.util.Stack;
 
-import snake.Board;
-import snake.Direction;
-import snake.Piece;
-import snake.SquareContents;
 
 public class BodyPiece extends Piece {
 
@@ -177,8 +173,8 @@ public class BodyPiece extends Piece {
 
 	public boolean detectCollisionWithWalls() {
 		int x = xy.getX(), y = xy.getY();
-		if (x < 0 || ((x + SIZE) > (ComputerPlayerSnakeView.SIDELENGTH)) || y < 0
-				|| ((y + SIZE) > (ComputerPlayerSnakeView.SIDELENGTH))) {
+		if (x < 0 || ((x + SIZE) > (SnakeView.SIDELENGTH)) || y < 0
+				|| ((y + SIZE) > (SnakeView.SIDELENGTH))) {
 			return true;
 		}
 		return false;
