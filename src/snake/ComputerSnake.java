@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
-
 public class ComputerSnake extends SnakeBody {
 	/*
 	 * Used this tutorial to implement A-star pathfinding:
@@ -19,8 +18,8 @@ public class ComputerSnake extends SnakeBody {
 	private Square start;
 	private Square target;
 
-	public ComputerSnake(BodyPiece head, int initialLength,
-			ArrayList<Piece> obstacles, BodyPiece food, Board board) {
+	public ComputerSnake(BodyPiece head, int initialLength, BodyPiece food,
+			Board board) {
 		super(head, initialLength);
 		this.food = food;
 		path = new Stack<Square>();
@@ -30,9 +29,8 @@ public class ComputerSnake extends SnakeBody {
 		closedList = new HashMap<XYCoordinate, Square>();
 	}
 
-	public ComputerSnake(BodyPiece head, int initialLength,
-			ArrayList<Piece> obstacles, Board board) {
-		this(head, initialLength, obstacles, null, board);
+	public ComputerSnake(BodyPiece head, int initialLength, Board board) {
+		this(head, initialLength, null, board);
 
 	}
 

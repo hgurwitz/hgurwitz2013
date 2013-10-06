@@ -12,7 +12,7 @@ public class ComputerPlayerGameController extends GameController {
 	public ComputerPlayerGameController() {
 		super();
 		computerSnake = new ComputerSnake(new BodyPiece(initialLoc, initialLoc,
-				Direction.LEFT), initialSnakeLength, obstacles, board);
+				Direction.LEFT), initialSnakeLength, board);
 		computerSnake.setFood(food);
 		board.setComputerSnake(computerSnake);
 	}

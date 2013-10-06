@@ -16,13 +16,13 @@ public class MultiPlayerGameController extends GameController {
 	private KeyboardListener listener;
 
 	public MultiPlayerGameController() {
+		super();
 		playerSnake = new SnakeBody(new BodyPiece(initialLoc, initialLoc),
 				initialSnakeLength);
 		listener = new KeyboardListener(playerSnake, this);
-		initialLoc = SnakeView.SIDELENGTH / 4;
-		initialLoc -= initialLoc % Piece.SIZE;
+		initialLoc = (SnakeView.SIDELENGTH / 4) % Piece.SIZE;
 		computerSnake = new ComputerSnake(new BodyPiece(initialLoc, initialLoc,
-				Direction.LEFT), initialSnakeLength, obstacles, board);
+				Direction.LEFT), initialSnakeLength, board);
 		computerSnake.setFood(food);
 		board.setComputerSnake(computerSnake);
 		board.setPlayerSnake(playerSnake);

@@ -8,18 +8,14 @@ import snake.SnakeBody;
 public class SinglePlayerGameController extends GameController {
 
 	private SnakeBody playerSnake;
-	private KeyboardListener listener;
 
 	public SinglePlayerGameController() {
-
+		super();
+		System.out.println("initialLoc" + initialLoc);
 		playerSnake = new SnakeBody(new BodyPiece(initialLoc, initialLoc),
 				initialSnakeLength);
 		listener = new KeyboardListener(playerSnake, this);
 		board.setPlayerSnake(playerSnake);
-	}
-
-	public KeyboardListener getListener() {
-		return listener;
 	}
 
 	public SnakeBody getSnake() {
