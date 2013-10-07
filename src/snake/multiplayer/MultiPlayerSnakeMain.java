@@ -1,7 +1,7 @@
 package snake.multiplayer;
 
-import snake.GameType;
 import snake.SnakeMain;
+import snake.enums.GameType;
 
 public class MultiPlayerSnakeMain extends SnakeMain {
 

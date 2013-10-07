@@ -3,6 +3,8 @@ package snake;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import snake.enums.Direction;
+
 
 public class KeyboardListener implements KeyListener {
 

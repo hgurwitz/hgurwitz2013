@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
+import snake.enums.Direction;
+import snake.enums.SquareContents;
+
 public class ComputerSnake extends SnakeBody {
 	/*
 	 * Used this tutorial to implement A-star pathfinding:

@@ -1,4 +1,4 @@
-package snake;
+package snake.enums;
 
 public enum GameType {
 

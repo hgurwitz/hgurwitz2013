@@ -2,12 +2,12 @@ package snake.multiplayer;
 
 import snake.BodyPiece;
 import snake.ComputerSnake;
-import snake.Direction;
 import snake.GameController;
 import snake.KeyboardListener;
 import snake.Piece;
 import snake.SnakeBody;
 import snake.SnakeView;
+import snake.enums.Direction;
 
 public class MultiPlayerGameController extends GameController {
 
@@ -52,11 +52,13 @@ public class MultiPlayerGameController extends GameController {
 						|| computerSnake.detectCollision(board)) {
 					System.out.println("Detected snake collision");
 					detectedCollision();
+				} else {
+					board.setComputerSnake(computerSnake.getHead());
+					board.setEmpty(computerSnake.getOldTail());
+					board.setPlayerSnake(playerSnake.getHead());
+					board.setEmpty(playerSnake.getOldTail());
 				}
-				board.setComputerSnake(computerSnake.getHead());
-				board.setEmpty(computerSnake.getOldTail());
-				board.setPlayerSnake(playerSnake.getHead());
-				board.setEmpty(playerSnake.getOldTail());
+
 			}
 		}
 	}

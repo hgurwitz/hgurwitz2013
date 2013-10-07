@@ -26,7 +26,6 @@ public class GameController {
 		food = generator.getNewPieceOfFood(board);
 		board.setFood(food);
 		board.setObstacles(obstacles);
-
 	}
 
 	private void initializeObstacles(int howMany) {
@@ -43,7 +42,6 @@ public class GameController {
 				x += 2 * Piece.SIZE;
 			}
 		}
-
 	}
 
 	public BodyPiece getFood() {

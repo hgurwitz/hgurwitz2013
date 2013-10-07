@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import snake.computer_player.ComputerPlayerGameController;
+import snake.enums.GameType;
 import snake.multiplayer.MultiPlayerGameController;
 import snake.single_player.SinglePlayerGameController;
 

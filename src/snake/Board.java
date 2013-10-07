@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
+import snake.enums.SquareContents;
+
 public class Board {
 
 	private HashMap<XYCoordinate, Square> squaresMap;

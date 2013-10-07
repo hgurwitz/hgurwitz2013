@@ -1,5 +1,7 @@
 package snake;
 
+import snake.enums.Direction;
+
 
 public class SnakeBody {
 

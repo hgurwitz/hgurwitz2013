@@ -1,7 +1,7 @@
 package snake.computer_player;
 
-import snake.GameType;
 import snake.SnakeMain;
+import snake.enums.GameType;
 
 public class ComputerPlayerSnakeMain extends SnakeMain {
 

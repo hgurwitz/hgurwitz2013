@@ -2,6 +2,8 @@ package snake;
 
 import java.util.Random;
 
+import snake.enums.SquareContents;
+
 
 public class FoodGenerator {
 	private Random random;

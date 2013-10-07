@@ -2,8 +2,8 @@ package snake.computer_player;
 
 import snake.BodyPiece;
 import snake.ComputerSnake;
-import snake.Direction;
 import snake.GameController;
+import snake.enums.Direction;
 
 public class ComputerPlayerGameController extends GameController {
 

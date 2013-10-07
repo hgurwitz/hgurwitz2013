@@ -32,9 +32,10 @@ public class SinglePlayerGameController extends GameController {
 				}
 				if (playerSnake.detectCollision(board)) {
 					detectedCollision();
+				} else {
+					board.setPlayerSnake(playerSnake.getHead());
+					board.setEmpty(playerSnake.getOldTail());
 				}
-				board.setPlayerSnake(playerSnake.getHead());
-				board.setEmpty(playerSnake.getOldTail());
 			}
 		}
 	}

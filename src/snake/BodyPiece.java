@@ -3,6 +3,9 @@ package snake;
 import java.util.EmptyStackException;
 import java.util.Stack;
 
+import snake.enums.Direction;
+import snake.enums.SquareContents;
+
 
 public class BodyPiece extends Piece {
 
