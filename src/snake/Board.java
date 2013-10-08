@@ -40,8 +40,13 @@ public class Board {
 	public void setComputerSnake(ComputerSnake snake) {
 		BodyPiece p = snake.getHead();
 		while (p != null) {
-			squaresMap.get(p.getXY())
-					.setContent(SquareContents.COMP_SNAKEPIECE);
+			XYCoordinate xy = p.getXY();
+			System.out.println("in setComputerSnake(snake) " + xy);
+			Square s = squaresMap.get(xy);
+			if (s == null) {
+				System.out.println("NULL in setComputerSnake(snake). Xy " + xy);
+			}
+			s.setContent(SquareContents.COMP_SNAKEPIECE);
 			p = p.getNextNode();
 		}
 	}
@@ -58,18 +63,28 @@ public class Board {
 	public void setComputerSnake(BodyPiece piece) {
 		XYCoordinate xy = piece.getXY();
 		Square s = squaresMap.get(xy);
+		if (s == null) {
+			System.out.println("NULL in setComputerSnake(). Xy " + xy);
+		}
 		s.setContent(SquareContents.COMP_SNAKEPIECE);
 	}
 
 	public void setPlayerSnake(BodyPiece piece) {
 		XYCoordinate xy = piece.getXY();
 		Square s = squaresMap.get(xy);
+		if (s == null) {
+			System.out.println("NULL in setPlayerSnake(). Xy " + xy);
+		}
 		s.setContent(SquareContents.PLAYER_SNAKEPIECE);
 	}
 
 	public void setObstacles(ArrayList<Piece> obstacles) {
 		for (Piece p : obstacles) {
-			squaresMap.get(p.getXY()).setContent(SquareContents.OBSTACLE);
+			Square s = squaresMap.get(p.getXY());
+			if (s == null) {
+				System.out.println("NULL in setObstacles(). Xy " + p.getXY());
+			}
+			s.setContent(SquareContents.OBSTACLE);
 		}
 	}
 

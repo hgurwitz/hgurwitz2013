@@ -11,7 +11,7 @@ public class SnakeView extends JComponent {
 
 	protected static final long serialVersionUID = 1L;
 	protected GameController controller;
-	public static final int PIECELENGTH = 20;
+	public static final int PIECELENGTH = 25;
 	public static final int SIDELENGTH = (PIECELENGTH * BodyPiece.SIZE);
 
 	public SnakeView(GameController controller) {

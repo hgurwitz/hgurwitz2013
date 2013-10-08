@@ -1,9 +1,8 @@
 package snake;
 
-
 public class Piece {
 
-	public static final int SIZE = 10;
+	public static final int SIZE = 15;
 	protected XYCoordinate xy;
 
 	public Piece(int x, int y) {

@@ -93,9 +93,9 @@ public class Square {
 		}
 		g2 = (Graphics2D) g;
 		g2.setComposite(ALPHA);
-		g2.setColor(color);
+		g.setColor(color);
 		if (!content.equals(SquareContents.EMPTY)) {
-			g2.fillRoundRect(xy.getX(), xy.getY(), Piece.SIZE, Piece.SIZE, 10,
+			g.fillRoundRect(xy.getX(), xy.getY(), Piece.SIZE, Piece.SIZE, 10,
 					10);
 		}
 

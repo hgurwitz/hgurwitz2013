@@ -181,8 +181,8 @@ public class ComputerSnake extends SnakeBody {
 
 	private Square findLowestFOnOpenList(HashMap<XYCoordinate, Square> openList) {
 		/*
-		 * If 2 Squares have equal Fs, the method should return the one that
-		 * will not cause the snake to turn (so the path is smoother)
+		 * It is possible for 2 Squares to have equal Fs. The method should take
+		 * this into account and decide which one is better
 		 */
 
 		int lowestF = 0;
