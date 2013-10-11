@@ -6,7 +6,7 @@ import snake.enums.GameType;
 public class ComputerPlayerSnakeMain extends SnakeMain {
 
 	public ComputerPlayerSnakeMain() {
-		super(GameType.COMPUTER_PLAYER);
+		super(new ComputerPlayerGameController());
 	}
 
 	public static void main(String[] args) {
