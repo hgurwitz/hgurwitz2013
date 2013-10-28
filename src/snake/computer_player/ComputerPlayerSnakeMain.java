@@ -1,9 +1,10 @@
 package snake.computer_player;
 
 import snake.SnakeMain;
-import snake.enums.GameType;
 
 public class ComputerPlayerSnakeMain extends SnakeMain {
+
+	private static final long serialVersionUID = 1L;
 
 	public ComputerPlayerSnakeMain() {
 		super(new ComputerPlayerGameController());

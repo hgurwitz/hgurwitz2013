@@ -4,6 +4,8 @@ import snake.SnakeMain;
 
 public class MultiPlayerSnakeMain extends SnakeMain {
 
+	private static final long serialVersionUID = 1L;
+
 	public MultiPlayerSnakeMain() {
 		super(new MultiPlayerGameController());
 	}
