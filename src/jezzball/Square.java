@@ -1,11 +1,9 @@
-package snake;
+package jezzball;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-
-import snake.enums.SquareContents;
 
 public class Square {
 
@@ -17,6 +15,7 @@ public class Square {
 			AlphaComposite.SRC_OVER, .6f);
 	protected Graphics2D g2;
 	protected Color color;
+	public final static int SIZE = 10;
 
 	public Square(XYCoordinate xy, SquareContents content) {
 		this.xy = xy;
@@ -76,32 +75,37 @@ public class Square {
 	protected void paint(Graphics g) {
 		if (color == null) {
 			switch (content) {
-			case EMPTY:
-				color = Color.WHITE;
-				break;
-			case FOOD:
-				color = Color.RED;
-				break;
-			case COMP_SNAKEPIECE:
-				color = Color.GREEN;
-				break;
-			case PLAYER_SNAKEPIECE:
+
+			case WALL:
 				color = Color.BLUE;
 				break;
-			case OBSTACLE:
-				color = Color.MAGENTA;
+			case MOVING_WALL:
+				color = Color.BLUE;
+				break;
+			case BALL:
+				color = Color.GREEN;
+				break;
+			case EMPTY:
+				color = Color.PINK;
 				break;
 			}
 		}
 
-		g2 = (Graphics2D) g;
-		g2.setComposite(ALPHA);
-		g.setColor(color);
 		if (!content.equals(SquareContents.EMPTY)) {
-			g.fillRoundRect(xy.getX(), xy.getY(), Piece.SIZE, Piece.SIZE, 10,
-					10);
+			g2 = (Graphics2D) g;
+			g2.setComposite(ALPHA);
+			g.setColor(color);
+			g.fillRoundRect(xy.getX(), xy.getY(), SIZE, SIZE, 10, 10);
 		}
 
+	}
+
+	public Square getMyTrailParent() {
+		return parent;
+	}
+
+	public void setMyTrailParent(Square myTrailParent) {
+		this.parent = myTrailParent;
 	}
 
 	public Color getColor() {
@@ -111,4 +115,5 @@ public class Square {
 	public void setColor(Color color) {
 		this.color = color;
 	}
+
 }
