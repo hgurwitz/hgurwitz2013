@@ -9,8 +9,7 @@ import java.util.Stack;
 
 import javax.swing.JComponent;
 
-//TESTING GIT
-//AND AGAIN
+
 public class Board extends JComponent {
 
 	private HashMap<XYCoordinate, Square> squaresMap;
@@ -25,7 +24,7 @@ public class Board extends JComponent {
 				System.out.print(xy);
 				SquareContents contents = SquareContents.EMPTY;
 				int max = sidelength - Square.SIZE;
-				if (x == 0 || y == 0) {// || x == max || y == max) {
+				if (x == 0 || y == 0 || x == max || y == max) {
 					contents = SquareContents.WALL;
 				}
 				Square s = new Square(xy, contents);

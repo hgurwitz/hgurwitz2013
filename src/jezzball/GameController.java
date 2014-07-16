@@ -1,5 +1,7 @@
 package jezzball;
 
+import gurwitz.physics2.Projectile;
+
 import java.awt.Cursor;
 import java.awt.Graphics;
 
@@ -7,14 +9,13 @@ import javax.swing.JComponent;
 
 public class GameController extends JComponent {
 
-	protected int initialSnakeLength;
-
 	protected boolean gameOver = false;
 	protected Board board;
 	protected JezzView view; // needed to change cursor
 	protected int initialX, initialY;
 	protected MouseClickListener listener;
 	private Direction direction;
+	protected Projectile projectile;
 
 	public GameController() {
 		// initialX = (SnakeView.SIDELENGTH - (initialSnakeLength *
@@ -24,7 +25,7 @@ public class GameController extends JComponent {
 		board = new Board();
 		listener = new MouseClickListener(this);
 		direction = Direction.HORIZONTAL;
-		setCursor(Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR));
+	//	view.setCursor(Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR));
 	}
 
 	public Board getBoard() {
@@ -116,7 +117,7 @@ public class GameController extends JComponent {
 
 			}
 		}
-		System.out.println(board.checkForSquare(xy));
+	//	System.out.println(board.checkForSquare(xy));
 
 		// if the line formed a complete square with no ball in it
 		// then fill in the square

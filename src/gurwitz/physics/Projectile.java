@@ -27,7 +27,10 @@ public class Projectile {
 		cos = Math.cos(angle);
 		this.startX = x;
 		this.startY = y;
+		int z = "space".length();
 	}
+	
+	
 
 	public double getX(double time) {
 		return cos * velocity * time + startX;
