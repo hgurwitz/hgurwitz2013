@@ -1,9 +1,10 @@
 import java.util.*;
-import org.apache.commons.math3.util.CombinatoricsUtils;
+//import org.apache.commons.math3.util.CombinatoricsUtils;
 
 public class Combinations1 {
 
 public static void main (String[] args){
+	/*
 ArrayList<Integer[]> combinations = new ArrayList();
 Iterator<int[]> iter = CombinatoricsUtils.combinationsIterator(3, 2);
 while (iter.hasNext()) {
@@ -17,7 +18,6 @@ while (iter.hasNext()) {
 for (int i = 0; i < combinations.size(); i++) {
      System.out.println(Arrays.deepToString(combinations.get(i)));
 }
-
 
 
 String[][] newArray = new String[combinations.size()][2];
@@ -35,6 +35,7 @@ for (int i = 0; i < combinations.size(); i++) {
 }
 
 
+*/
 
 
 

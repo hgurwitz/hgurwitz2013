@@ -1,9 +1,12 @@
 package jezzball;
 
-import gurwitz.physics2.Projectile;
+//import gurwitz.physics2.Projectile;
+//import gurwitz.physics2.Ball;
 
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
+import java.util.Random;
 
 import javax.swing.JComponent;
 
@@ -15,7 +18,9 @@ public class GameController extends JComponent {
 	protected int initialX, initialY;
 	protected MouseClickListener listener;
 	private Direction direction;
-	protected Projectile projectile;
+	//protected Projectile projectile;
+	private Ball ball;
+	private Random random;
 
 	public GameController() {
 		// initialX = (SnakeView.SIDELENGTH - (initialSnakeLength *
@@ -26,6 +31,9 @@ public class GameController extends JComponent {
 		listener = new MouseClickListener(this);
 		direction = Direction.HORIZONTAL;
 	//	view.setCursor(Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR));
+		random=new Random();
+		initializeBall();	
+		
 	}
 
 	public Board getBoard() {
@@ -41,6 +49,19 @@ public class GameController extends JComponent {
 		System.out.println("Detected collision");
 
 	}
+	
+	private void initializeBall(){
+		Color color = new Color(random.nextInt(255), random.nextInt(255),
+				random.nextInt(255));
+		
+	  int radius = 6;
+      int x = random.nextInt(800 - radius * 2 - 20) + radius + 10;
+      int y = random.nextInt(600 - radius * 2 - 20) + radius + 10;
+      float speed = 0.2f;
+      int angleInDegree = random.nextInt(360);
+      ball = new Ball(x, y, radius,  angleInDegree,speed,color);
+		
+	}
 
 	public void changeDirection() {
 		if (direction == Direction.HORIZONTAL) {
@@ -53,7 +74,10 @@ public class GameController extends JComponent {
 	}
 
 	public void paint(Graphics g) {
+		g.drawLine(10,10,board.sidelength,board.sidelength);
 		board.paint(g);
+		ball.moveBallOneStep();
+		ball.paint(g);
 	}
 
 	public void mouseClicked(int x, int y) {

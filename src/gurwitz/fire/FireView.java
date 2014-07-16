@@ -148,7 +148,7 @@ public class FireView extends JComponent {
 		} else if (relativeTime < 8) {
 			return Color.GRAY;
 		} else {
-			return Color.BLACK;
+			return Color.YELLOW;
 		}
 	}
 

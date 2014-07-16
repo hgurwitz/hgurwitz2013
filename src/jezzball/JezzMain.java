@@ -10,6 +10,10 @@ public class JezzMain extends JFrame {
 	protected static final long serialVersionUID = 1L;
 	protected JPanel panel;
 
+	public static void main(String[] args) {
+		new JezzMain(new GameController());
+	}
+	
 	public JezzMain(GameController controller) {
 		setTitle("Jezz");
 		// setLocationRelativeTo(null);
@@ -26,7 +30,5 @@ public class JezzMain extends JFrame {
 
 	}
 
-	public static void main(String[] args) {
-		new JezzMain(new GameController());
-	}
+	
 }
