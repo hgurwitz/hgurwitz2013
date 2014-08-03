@@ -54,12 +54,13 @@ public class GameController extends JComponent {
 		Color color = new Color(random.nextInt(255), random.nextInt(255),
 				random.nextInt(255));
 		
-	  int radius = 6;
-      int x = random.nextInt(800 - radius * 2 - 20) + radius + 10;
-      int y = random.nextInt(600 - radius * 2 - 20) + radius + 10;
-      float speed = 0.2f;
-      int angleInDegree = random.nextInt(360);
-      ball = new Ball(x, y, radius,  angleInDegree,speed,color);
+		int radius = 20;
+		// int x = random.nextInt(350) + radius + 10;
+		// int y = random.nextInt(350) + radius + 10;
+		int x = 20, y = 20;
+		float speed = 0.5f;
+		int angleInDegree = 80; // random.nextInt(360);
+		ball = new Ball(x, y, radius, angleInDegree, speed, color, board);
 		
 	}
 
@@ -74,7 +75,7 @@ public class GameController extends JComponent {
 	}
 
 	public void paint(Graphics g) {
-		g.drawLine(10,10,board.sidelength,board.sidelength);
+		// g.drawLine(10,10,board.sidelength,board.sidelength);
 		board.paint(g);
 		ball.moveBallOneStep();
 		ball.paint(g);

@@ -51,7 +51,12 @@ public class Board extends JComponent {
 	}
 
 	public SquareContents getContentsOfASquare(XYCoordinate xy) {
-		return squaresMap.get(xy).getContent();
+		if (squaresMap.get(xy) != null) {
+			// System.out.println(squaresMap.get(xy).getContent());
+			return squaresMap.get(xy).getContent();
+		}
+		// System.out.println("returning null");
+		return null;
 	}
 
 	public SquareContents mouseClicked(XYCoordinate clickedSquare) {
