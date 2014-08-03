@@ -6,6 +6,7 @@ package jezzball;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JComponent;
@@ -18,22 +19,16 @@ public class GameController extends JComponent {
 	protected int initialX, initialY;
 	protected MouseClickListener listener;
 	private Direction direction;
-	//protected Projectile projectile;
-	private Ball ball;
+	private ArrayList<Ball> balls;
 	private Random random;
 
 	public GameController() {
-		// initialX = (SnakeView.SIDELENGTH - (initialSnakeLength *
-		// Piece.SIZE));
-		// initialY = (SnakeView.SIDELENGTH / 3);
-		// initialY -= (initialY % Piece.SIZE);
 		board = new Board();
 		listener = new MouseClickListener(this);
 		direction = Direction.HORIZONTAL;
 	//	view.setCursor(Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR));
 		random=new Random();
-		initializeBall();	
-		
+		initializeBalls();
 	}
 
 	public Board getBoard() {
@@ -50,17 +45,18 @@ public class GameController extends JComponent {
 
 	}
 	
-	private void initializeBall(){
+	private void initializeBalls() {
 		Color color = new Color(random.nextInt(255), random.nextInt(255),
 				random.nextInt(255));
-		
-		int radius = 20;
-		// int x = random.nextInt(350) + radius + 10;
-		// int y = random.nextInt(350) + radius + 10;
-		int x = 20, y = 20;
-		float speed = 0.5f;
-		int angleInDegree = 80; // random.nextInt(360);
-		ball = new Ball(x, y, radius, angleInDegree, speed, color, board);
+		int radius = 10;
+		balls = new ArrayList<Ball>();
+		for (int i = 1; i < 4; i++) {
+			int x = 20 * i;
+			int y = 20 * i;
+			float speed = 0.5f;
+			int angleInDegree = 80 * i;
+			balls.add(new Ball(x, y, radius, angleInDegree, speed, color, board));
+		}
 		
 	}
 
@@ -77,8 +73,11 @@ public class GameController extends JComponent {
 	public void paint(Graphics g) {
 		// g.drawLine(10,10,board.sidelength,board.sidelength);
 		board.paint(g);
-		ball.moveBallOneStep();
-		ball.paint(g);
+		for (Ball ball : balls) {
+			ball.moveBallOneStep();
+			ball.paint(g);
+		}
+
 	}
 
 	public void mouseClicked(int x, int y) {

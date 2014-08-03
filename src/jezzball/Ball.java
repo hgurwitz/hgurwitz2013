@@ -14,7 +14,6 @@ public class Ball {
 	private double x, y;
 	private double prevX, prevY;
 	private Board board;
-	int myInt = 0;
 
 	public Ball(int x, int y, int radius, double angleDegrees, double velocity,
 			Color color, Board board) {
